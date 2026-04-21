@@ -1,0 +1,504 @@
+time=2026-04-21T11:48:22.829+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T11:48:26.058+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:48:26.064+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T11:48:26.064+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:48:26.064+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:48:26.064+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T11:48:30.080+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T11:48:30.083+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:48:30.084+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T11:48:30.084+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T11:48:30.086+05:00 level=INFO msg="process started" attempt=primary pid=10632
+time=2026-04-21T11:48:30.497+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T11:48:30.503+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:48:30.504+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T11:48:30.504+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T11:48:30.506+05:00 level=INFO msg="process started" attempt=primary pid=7968
+time=2026-04-21T11:48:33.522+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3435
+time=2026-04-21T11:48:42.213+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T11:48:42.219+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:48:42.219+05:00 level=INFO msg="config loaded" name=default heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=50 ihop=20 large_pages=false flags_count=16
+time=2026-04-21T11:48:42.219+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=78
+time=2026-04-21T11:48:42.222+05:00 level=INFO msg="process started" attempt=primary pid=14436
+time=2026-04-21T11:48:44.150+05:00 level=WARN msg="fast -123 after injected game flags, retrying passthrough" wait_ms=1926 orig_arg_count=64
+time=2026-04-21T11:48:44.150+05:00 level=INFO msg="trying light optimization profile without stripping launcher args" light_flags_count=9
+time=2026-04-21T11:48:44.150+05:00 level=INFO msg="process starting" attempt=fallback_light exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=73
+time=2026-04-21T11:48:44.152+05:00 level=INFO msg="process started" attempt=fallback_light pid=2260
+time=2026-04-21T11:48:44.554+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=401
+time=2026-04-21T11:50:35.599+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T11:50:38.198+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:50:38.203+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T11:50:38.203+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T11:50:38.203+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T11:50:38.203+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T11:50:41.355+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:50:41.360+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T11:50:41.360+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:50:41.360+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:50:41.360+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T11:50:54.979+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=144469
+time=2026-04-21T11:50:58.613+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T11:50:58.618+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:50:58.618+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T11:50:58.618+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T11:50:58.620+05:00 level=INFO msg="process started" attempt=primary pid=30184
+time=2026-04-21T11:50:59.023+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T11:50:59.029+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:50:59.030+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T11:50:59.030+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T11:50:59.032+05:00 level=INFO msg="process started" attempt=primary pid=15468
+time=2026-04-21T11:51:02.046+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3425
+time=2026-04-21T11:51:09.437+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T11:51:09.443+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=15 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:51:09.443+05:00 level=INFO msg="config loaded" name=default heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=50 ihop=20 large_pages=false flags_count=16
+time=2026-04-21T11:51:09.444+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=78
+time=2026-04-21T11:51:09.446+05:00 level=INFO msg="process started" attempt=primary pid=1400
+time=2026-04-21T11:51:11.407+05:00 level=WARN msg="fast -123 after injected game flags, retrying passthrough" wait_ms=1961 orig_arg_count=64
+time=2026-04-21T11:51:11.407+05:00 level=INFO msg="trying light optimization profile without stripping launcher args" light_flags_count=9
+time=2026-04-21T11:51:11.407+05:00 level=INFO msg="process starting" attempt=fallback_light exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=73
+time=2026-04-21T11:51:11.410+05:00 level=INFO msg="process started" attempt=fallback_light pid=12800
+time=2026-04-21T11:51:11.813+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=402
+time=2026-04-21T11:51:38.285+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=39251
+time=2026-04-21T11:52:42.194+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:52:42.200+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T11:52:42.200+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T11:52:42.200+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T11:52:42.200+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T11:54:09.797+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T11:54:13.974+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:54:13.979+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T11:54:13.979+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:13.979+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:13.979+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T11:54:16.169+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:54:16.174+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T11:54:16.175+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T11:54:16.175+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T11:54:16.175+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T11:54:19.013+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:54:19.018+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T11:54:19.018+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:19.018+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:19.018+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T11:54:20.824+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:54:20.829+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T11:54:20.829+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:20.829+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:20.829+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T11:54:23.093+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:54:23.098+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T11:54:23.098+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T11:54:23.098+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T11:54:23.098+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T11:54:24.760+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:54:24.765+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T11:54:24.765+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:24.765+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T11:54:24.765+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T11:54:48.601+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T11:54:48.605+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:54:48.605+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T11:54:48.605+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T11:54:48.608+05:00 level=INFO msg="process started" attempt=primary pid=19476
+time=2026-04-21T11:54:49.210+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T11:54:49.217+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:54:49.217+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T11:54:49.217+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T11:54:49.219+05:00 level=INFO msg="process started" attempt=primary pid=4320
+time=2026-04-21T11:54:52.236+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3628
+time=2026-04-21T11:55:01.048+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T11:55:01.054+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T11:55:01.055+05:00 level=INFO msg="config loaded" name=default heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=50 ihop=20 large_pages=false flags_count=16
+time=2026-04-21T11:55:01.055+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=78
+time=2026-04-21T11:55:01.058+05:00 level=INFO msg="process started" attempt=primary pid=31128
+time=2026-04-21T11:55:03.023+05:00 level=WARN msg="fast -123 after injected game flags, retrying passthrough" wait_ms=1965 orig_arg_count=64
+time=2026-04-21T11:55:03.023+05:00 level=INFO msg="trying light optimization profile without stripping launcher args" light_flags_count=9
+time=2026-04-21T11:55:03.023+05:00 level=INFO msg="process starting" attempt=fallback_light exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=73
+time=2026-04-21T11:55:03.027+05:00 level=INFO msg="process started" attempt=fallback_light pid=30080
+time=2026-04-21T11:55:03.459+05:00 level=WARN msg="light profile result considered unstable, retrying pure passthrough" code=0 wait_ms=431
+time=2026-04-21T11:55:03.459+05:00 level=INFO msg="process starting" attempt=fallback_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T11:55:03.461+05:00 level=INFO msg="process started" attempt=fallback_passthrough pid=4644
+time=2026-04-21T11:55:03.869+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=407
+time=2026-04-21T11:55:10.126+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T11:55:10.132+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T11:55:10.132+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T11:55:10.132+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T11:55:10.132+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T11:55:15.799+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=26579
+time=2026-04-21T17:19:57.763+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T17:20:03.152+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:20:03.156+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:20:03.156+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:20:03.156+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:20:03.156+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:20:14.808+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T17:20:14.811+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:20:14.812+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:20:14.812+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T17:20:14.815+05:00 level=INFO msg="process started" attempt=primary pid=1100
+time=2026-04-21T17:20:15.179+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T17:20:15.185+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:20:15.186+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:20:15.186+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T17:20:15.188+05:00 level=INFO msg="process started" attempt=primary pid=27048
+time=2026-04-21T17:20:18.196+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3380
+time=2026-04-21T17:20:30.222+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T17:20:30.227+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:20:30.228+05:00 level=INFO msg="config loaded" name=default heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=50 ihop=20 large_pages=false flags_count=16
+time=2026-04-21T17:20:30.228+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=78
+time=2026-04-21T17:20:30.230+05:00 level=INFO msg="process started" attempt=primary pid=3568
+time=2026-04-21T17:20:32.161+05:00 level=WARN msg="fast -123 after injected game flags, retrying passthrough" wait_ms=1930 orig_arg_count=64
+time=2026-04-21T17:20:32.161+05:00 level=INFO msg="trying light optimization profile without stripping launcher args" light_flags_count=9
+time=2026-04-21T17:20:32.161+05:00 level=INFO msg="process starting" attempt=fallback_light exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=73
+time=2026-04-21T17:20:32.163+05:00 level=INFO msg="process started" attempt=fallback_light pid=27528
+time=2026-04-21T17:20:32.544+05:00 level=WARN msg="light profile result considered unstable, retrying pure passthrough" code=0 wait_ms=380
+time=2026-04-21T17:20:32.544+05:00 level=INFO msg="process starting" attempt=fallback_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:20:32.547+05:00 level=INFO msg="process started" attempt=fallback_passthrough pid=28408
+time=2026-04-21T17:20:32.941+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=394
+time=2026-04-21T17:22:49.798+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:23:43.992+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T17:23:48.868+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:23:48.873+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:23:48.873+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:23:48.873+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:23:48.873+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:23:56.559+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=221371
+time=2026-04-21T17:24:01.191+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T17:24:01.194+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:24:01.194+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:24:01.194+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T17:24:01.197+05:00 level=INFO msg="process started" attempt=primary pid=27072
+time=2026-04-21T17:24:01.572+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T17:24:01.577+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:24:01.577+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:24:01.577+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T17:24:01.579+05:00 level=INFO msg="process started" attempt=primary pid=26064
+time=2026-04-21T17:24:04.596+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3399
+time=2026-04-21T17:24:14.856+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T17:24:14.863+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:24:14.863+05:00 level=INFO msg="config loaded" name=default mode=light heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=50 ihop=20 large_pages=false flags_count=14
+time=2026-04-21T17:24:14.863+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=77
+time=2026-04-21T17:24:14.867+05:00 level=INFO msg="process started" attempt=primary pid=26160
+time=2026-04-21T17:24:16.589+05:00 level=INFO msg="service exit" code=4294967173 code_i32=-123 code_hex=0xffffff85 low8_unsigned=133 low8_as_signed_int8=-123 wait_ms=1722
+time=2026-04-21T17:25:22.915+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T17:25:28.901+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:25:28.906+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T17:25:28.906+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T17:25:28.906+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T17:25:28.906+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T17:25:31.159+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:25:31.164+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:25:31.164+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:25:31.164+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:25:31.164+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:25:37.549+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T17:25:37.553+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:25:37.553+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:25:37.553+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T17:25:37.556+05:00 level=INFO msg="process started" attempt=primary pid=7064
+time=2026-04-21T17:25:37.931+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T17:25:37.936+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:25:37.936+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:25:37.936+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T17:25:37.939+05:00 level=INFO msg="process started" attempt=primary pid=20036
+time=2026-04-21T17:25:40.963+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3406
+time=2026-04-21T17:25:42.034+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=100455
+time=2026-04-21T17:25:50.038+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T17:25:50.043+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:25:50.044+05:00 level=INFO msg="config loaded" name=default mode=light heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=50 ihop=20 large_pages=false flags_count=14
+time=2026-04-21T17:25:50.044+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=77
+time=2026-04-21T17:25:50.046+05:00 level=INFO msg="process started" attempt=primary pid=6016
+time=2026-04-21T17:25:51.771+05:00 level=WARN msg="fast -123 after injected game flags, retrying pure passthrough" wait_ms=1723 orig_arg_count=64 injected_arg_count=77 mode=light
+time=2026-04-21T17:25:51.771+05:00 level=INFO msg="process starting" attempt=fallback_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:25:51.773+05:00 level=INFO msg="process started" attempt=fallback_passthrough pid=3220
+time=2026-04-21T17:25:52.153+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=380
+time=2026-04-21T17:35:38.777+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=600840
+time=2026-04-21T17:35:48.982+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:35:48.987+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:35:48.987+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:35:48.987+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:35:48.987+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:35:55.727+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T17:35:55.730+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:35:55.731+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:35:55.731+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T17:35:55.732+05:00 level=INFO msg="process started" attempt=primary pid=28448
+time=2026-04-21T17:35:56.110+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T17:35:56.116+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:35:56.116+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:35:56.116+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T17:35:56.124+05:00 level=INFO msg="process started" attempt=primary pid=7736
+time=2026-04-21T17:35:59.129+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3397
+time=2026-04-21T17:36:12.340+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T17:36:12.345+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:36:12.346+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T17:36:12.346+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:36:12.348+05:00 level=INFO msg="process started" attempt=primary pid=12492
+time=2026-04-21T17:36:14.187+05:00 level=INFO msg="service exit" code=4294967173 code_i32=-123 code_hex=0xffffff85 low8_unsigned=133 low8_as_signed_int8=-123 wait_ms=1838
+time=2026-04-21T17:37:50.909+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:37:50.913+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T17:37:50.914+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T17:37:50.914+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T17:37:50.914+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T17:37:53.554+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=117430
+time=2026-04-21T17:41:03.771+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:41:03.776+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:41:03.776+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:41:03.776+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:41:03.776+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:41:13.663+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T17:41:13.669+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=18 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:41:13.670+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T17:41:13.670+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:41:13.672+05:00 level=INFO msg="process started" attempt=primary pid=25168
+time=2026-04-21T17:41:15.433+05:00 level=WARN msg="fast -123 on Java 25 primary start, retrying identical passthrough launch" wait_ms=1758 arg_count=64
+time=2026-04-21T17:41:15.433+05:00 level=INFO msg="process starting" attempt=retry_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:41:15.433+05:00 level=INFO msg="process started" attempt=retry_passthrough pid=26912
+time=2026-04-21T17:41:15.830+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=396
+time=2026-04-21T17:43:47.601+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:43:47.606+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:43:47.606+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:43:47.606+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:43:47.606+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:43:50.908+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T17:43:53.701+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:43:53.705+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T17:43:53.705+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T17:43:53.705+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T17:43:53.705+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T17:43:57.480+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:43:57.484+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:43:57.485+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:43:57.485+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:43:57.485+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:44:13.551+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:44:13.555+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:44:13.555+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:44:13.555+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:44:13.555+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:44:57.080+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T17:44:57.084+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=18 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:44:57.084+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:44:57.084+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T17:44:57.087+05:00 level=INFO msg="process started" attempt=primary pid=23368
+time=2026-04-21T17:44:57.471+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T17:44:57.477+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:44:57.478+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:44:57.478+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T17:44:57.480+05:00 level=INFO msg="process started" attempt=primary pid=25728
+time=2026-04-21T17:45:00.501+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3413
+time=2026-04-21T17:45:11.565+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T17:45:11.570+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:45:11.571+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T17:45:11.571+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:45:11.573+05:00 level=INFO msg="process started" attempt=primary pid=20020
+time=2026-04-21T17:45:13.317+05:00 level=WARN msg="fast unstable Java 25 primary exit, retrying identical launch" wait_ms=1744 code=-123
+time=2026-04-21T17:45:13.317+05:00 level=INFO msg="process starting" attempt=retry_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:45:13.318+05:00 level=INFO msg="process started" attempt=retry_passthrough pid=30228
+time=2026-04-21T17:45:13.700+05:00 level=WARN msg="fast unstable Java 25 retry exit, trying BellSoft runtime" wait_ms=381 code=0 alt_exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe
+time=2026-04-21T17:45:13.700+05:00 level=INFO msg="process starting" attempt=fallback_bellsoft exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=64
+time=2026-04-21T17:45:13.705+05:00 level=INFO msg="process started" attempt=fallback_bellsoft pid=27920
+time=2026-04-21T17:45:14.094+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=388
+time=2026-04-21T17:51:18.937+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=381458
+time=2026-04-21T17:51:26.898+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T17:51:29.341+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:51:29.346+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T17:51:29.346+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T17:51:29.346+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T17:51:29.346+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T17:57:49.200+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T17:57:49.205+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T17:57:49.205+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:57:49.205+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T17:57:49.205+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T17:58:10.602+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T17:58:10.605+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=18 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:58:10.606+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:58:10.606+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T17:58:10.608+05:00 level=INFO msg="process started" attempt=primary pid=19932
+time=2026-04-21T17:58:11.342+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T17:58:11.347+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:58:11.348+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T17:58:11.348+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T17:58:11.349+05:00 level=INFO msg="process started" attempt=primary pid=6336
+time=2026-04-21T17:58:14.366+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3757
+time=2026-04-21T17:58:21.631+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T17:58:21.636+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T17:58:21.636+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T17:58:21.636+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:58:21.639+05:00 level=INFO msg="process started" attempt=primary pid=6800
+time=2026-04-21T17:58:23.407+05:00 level=WARN msg="fast unstable Java 25 primary exit, retrying identical launch" wait_ms=1767 code=-123
+time=2026-04-21T17:58:23.407+05:00 level=INFO msg="process starting" attempt=retry_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T17:58:23.408+05:00 level=INFO msg="process started" attempt=retry_passthrough pid=26368
+time=2026-04-21T17:58:23.806+05:00 level=WARN msg="fast unstable Java 25 retry exit, trying BellSoft runtime" wait_ms=397 code=0 alt_exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe
+time=2026-04-21T17:58:23.806+05:00 level=INFO msg="process starting" attempt=fallback_bellsoft exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=64
+time=2026-04-21T17:58:23.809+05:00 level=INFO msg="process started" attempt=fallback_bellsoft pid=9700
+time=2026-04-21T17:58:24.199+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=389
+time=2026-04-21T18:00:26.275+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T18:00:31.546+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:00:31.551+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:00:31.551+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:00:31.551+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:00:31.551+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:00:39.201+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=147851
+time=2026-04-21T18:00:41.835+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T18:00:41.839+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:00:41.839+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:00:41.839+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T18:00:41.842+05:00 level=INFO msg="process started" attempt=primary pid=26504
+time=2026-04-21T18:00:42.503+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T18:00:42.508+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:00:42.508+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:00:42.508+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T18:00:42.511+05:00 level=INFO msg="process started" attempt=primary pid=29352
+time=2026-04-21T18:00:45.523+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3681
+time=2026-04-21T18:01:00.542+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T18:01:00.547+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:01:00.548+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T18:01:00.548+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T18:01:00.550+05:00 level=INFO msg="process started" attempt=primary pid=24148
+time=2026-04-21T18:01:02.342+05:00 level=WARN msg="fast unstable Java 25 primary exit, retrying identical launch" wait_ms=1791 code=-123
+time=2026-04-21T18:01:02.342+05:00 level=INFO msg="process starting" attempt=retry_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T18:01:02.343+05:00 level=INFO msg="process started" attempt=retry_passthrough pid=24364
+time=2026-04-21T18:01:02.736+05:00 level=WARN msg="fast unstable Java 25 retry exit, trying BellSoft runtime" wait_ms=392 code=0 alt_exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe
+time=2026-04-21T18:01:02.736+05:00 level=INFO msg="process starting" attempt=fallback_bellsoft exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=64
+time=2026-04-21T18:01:02.739+05:00 level=INFO msg="process started" attempt=fallback_bellsoft pid=16060
+time=2026-04-21T18:01:03.132+05:00 level=ERROR msg="all Java 25 startup attempts ended too quickly; treating as launch failure" wait_ms=392 code=0
+time=2026-04-21T18:02:04.814+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T18:02:07.264+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:02:07.268+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:02:07.268+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:02:07.268+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:02:07.268+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:02:13.928+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=91417
+time=2026-04-21T18:02:16.101+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T18:02:16.105+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:02:16.105+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:02:16.105+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T18:02:16.107+05:00 level=INFO msg="process started" attempt=primary pid=27780
+time=2026-04-21T18:02:16.780+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T18:02:16.785+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:02:16.786+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:02:16.786+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T18:02:16.788+05:00 level=INFO msg="process started" attempt=primary pid=22100
+time=2026-04-21T18:02:19.795+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3687
+time=2026-04-21T18:02:31.027+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T18:02:31.032+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:02:31.032+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T18:02:31.032+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T18:02:31.034+05:00 level=INFO msg="process started" attempt=primary pid=24668
+time=2026-04-21T18:02:32.766+05:00 level=WARN msg="fast unstable Java 25 primary exit, retrying identical launch" wait_ms=1730 code=-123
+time=2026-04-21T18:02:32.766+05:00 level=INFO msg="process starting" attempt=retry_passthrough exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T18:02:32.766+05:00 level=INFO msg="process started" attempt=retry_passthrough pid=20296
+time=2026-04-21T18:02:33.155+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=389
+time=2026-04-21T18:06:28.296+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T18:06:30.355+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:06:30.360+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:06:30.360+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:06:30.360+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:06:30.360+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:06:33.413+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=256626
+time=2026-04-21T18:06:35.883+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T18:06:35.887+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:06:35.887+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:06:35.887+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T18:06:35.890+05:00 level=INFO msg="process started" attempt=primary pid=10564
+time=2026-04-21T18:06:36.635+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T18:06:36.639+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:06:36.639+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:06:36.639+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T18:06:36.642+05:00 level=INFO msg="process started" attempt=primary pid=30280
+time=2026-04-21T18:06:39.659+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3768
+time=2026-04-21T18:06:46.996+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T18:06:47.001+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:06:47.001+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T18:06:47.001+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T18:06:47.003+05:00 level=INFO msg="process started" attempt=primary pid=26808
+time=2026-04-21T18:07:36.594+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T18:10:19.518+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:10:19.523+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:10:19.523+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:10:19.523+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:10:19.523+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:14:07.693+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=440676
+time=2026-04-21T18:14:10.438+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=453781
+time=2026-04-21T18:14:12.784+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T18:14:12.788+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:14:12.788+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:14:12.788+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T18:14:12.790+05:00 level=INFO msg="process started" attempt=primary pid=2376
+time=2026-04-21T18:14:13.492+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T18:14:13.495+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:14:13.495+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:14:13.495+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T18:14:13.498+05:00 level=INFO msg="process started" attempt=primary pid=17040
+time=2026-04-21T18:14:15.518+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:14:15.526+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:14:15.527+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:14:15.527+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:14:15.527+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:14:16.510+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3718
+time=2026-04-21T18:14:24.982+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T18:14:24.987+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:14:24.987+05:00 level=INFO msg="Java 25 runtime detected: forcing passthrough (injection disabled)"
+time=2026-04-21T18:14:24.987+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=64
+time=2026-04-21T18:14:24.990+05:00 level=INFO msg="process started" attempt=primary pid=5044
+time=2026-04-21T18:19:11.074+05:00 level=INFO msg="cli startup" args_count=0
+time=2026-04-21T18:19:17.496+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:19:17.500+05:00 level=INFO msg="installer start" action=uninstall
+time=2026-04-21T18:19:17.500+05:00 level=INFO msg="installer target cleared" target=javaw.exe
+time=2026-04-21T18:19:17.500+05:00 level=INFO msg="installer target cleared" target=java.exe
+time=2026-04-21T18:19:17.500+05:00 level=INFO msg="installer done" action=uninstall errors=0
+time=2026-04-21T18:19:21.369+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=296317
+time=2026-04-21T18:19:22.053+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=308490
+time=2026-04-21T18:20:36.680+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:20:36.685+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:20:36.685+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:20:36.685+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:20:36.685+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:20:39.775+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T18:20:39.779+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:20:39.779+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:20:39.779+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T18:20:39.781+05:00 level=INFO msg="process started" attempt=primary pid=20492
+time=2026-04-21T18:20:40.524+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T18:20:40.527+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:20:40.527+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:20:40.527+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T18:20:40.529+05:00 level=INFO msg="process started" attempt=primary pid=28520
+time=2026-04-21T18:20:43.549+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3767
+time=2026-04-21T18:20:52.899+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T18:20:52.905+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=16 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:20:52.974+05:00 level=INFO msg="config loaded" name=default mode=java25-safe heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=50 ihop=20 large_pages=false flags_count=14
+time=2026-04-21T18:20:52.974+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=77
+time=2026-04-21T18:20:52.976+05:00 level=INFO msg="process started" attempt=primary pid=12168
+time=2026-04-21T18:32:27.995+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=707327
+time=2026-04-21T18:32:30.436+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=697321
+time=2026-04-21T18:32:35.228+05:00 level=INFO msg="service startup" args_count=4
+time=2026-04-21T18:32:35.231+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:32:35.250+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:32:35.250+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\java.exe arg_count=3
+time=2026-04-21T18:32:35.253+05:00 level=INFO msg="process started" attempt=primary pid=6048
+time=2026-04-21T18:32:35.986+05:00 level=INFO msg="service startup" args_count=10
+time=2026-04-21T18:32:35.989+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:32:35.990+05:00 level=INFO msg="JVM passthrough (not STALART bundled image or no reference JVM)"
+time=2026-04-21T18:32:35.990+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\GravitLauncherStore\Java\bellsoft-lts\bin\javaw.exe arg_count=9
+time=2026-04-21T18:32:35.991+05:00 level=INFO msg="process started" attempt=primary pid=26556
+time=2026-04-21T18:32:39.005+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=3751
+time=2026-04-21T18:32:48.550+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:32:48.554+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:32:48.554+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:32:48.554+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:32:48.554+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:32:59.869+05:00 level=INFO msg="cli startup" args_count=1
+time=2026-04-21T18:32:59.874+05:00 level=INFO msg="installer start" action=install
+time=2026-04-21T18:32:59.874+05:00 level=INFO msg="installer target set" target=javaw.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:32:59.874+05:00 level=INFO msg="installer target set" target=java.exe debugger="I:\\GoLang\\wrapper stalart\\build\\service.exe"
+time=2026-04-21T18:32:59.874+05:00 level=INFO msg="installer done" action=install
+time=2026-04-21T18:33:10.206+05:00 level=INFO msg="service startup" args_count=65
+time=2026-04-21T18:33:10.212+05:00 level=INFO msg="system detected" cores=14 ram_gb=31 free_ram_gb=17 l3_mb=24 big_cache=false large_pages=false
+time=2026-04-21T18:33:10.212+05:00 level=INFO msg="config loaded" name=ultra mode=java25-safe heap_gb=8 metaspace_mb=640 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=30 ihop=15 large_pages=false flags_count=14
+time=2026-04-21T18:33:10.212+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=77
+time=2026-04-21T18:33:10.215+05:00 level=INFO msg="process started" attempt=primary pid=28128
+time=2026-04-21T18:44:49.020+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=732917
+time=2026-04-21T18:45:12.591+05:00 level=INFO msg="service exit" code=3489660927 code_i32=-805306369 code_hex=0xcfffffff low8_unsigned=255 low8_as_signed_int8=-1 wait_ms=722267
