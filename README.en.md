@@ -26,8 +26,8 @@ This program allows you to change JVM startup parameters to increase game perfor
 > but stable gameplay is not guaranteed — prefer upgrading your RAM or sticking with
 > the stock Stalart launcher settings.
 
-[![Downloads](https://img.shields.io/github/downloads/STALART-Community/stalart-jvm-optimization/total?label=Downloads&color=green)](../../releases)
-[![Latest Release](https://img.shields.io/github/v/release/STALART-Community/stalart-jvm-optimization?label=Latest)](../../releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/stalart-community-dev/STALART-Community-JVM/total?label=Downloads&color=green)](../../releases)
+[![Latest Release](https://img.shields.io/github/v/release/stalart-community-dev/STALART-Community-JVM?label=Latest)](../../releases/latest)
 
 ---
 
@@ -62,7 +62,7 @@ The utility is installed **once** and automatically runs each time the game is l
 ### Installation
 
 > [!TIP]
-> The most common mistake during install is dropping `jvm_wrapper` somewhere deep inside `runtime/stalart/...`. The folder must sit **at the root of the Stalart Launcher directory**, next to `ExboLink.exe` and the `runtime/` directory. Here's what it should look like:
+> The most common mistake during install is dropping `jvm_wrapper` somewhere deep inside `runtime/stalart/...`. The folder must sit **at the root of the Stalart Launcher directory**, next to the launcher executable and the `runtime/` directory. Here's what it should look like:
 >
 > ![Example of where the jvm_wrapper folder belongs at the root of the Stalart Launcher directory](./docs/assets/install-folder-location.jpg)
 

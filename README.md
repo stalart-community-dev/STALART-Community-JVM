@@ -29,8 +29,8 @@
 > но стабильной работы игры это не гарантирует — лучше увеличить оперативную память или
 > использовать стандартные настройки лаунчера Stalart.
 
-[![Downloads](https://img.shields.io/github/downloads/STALART-Community/stalart-jvm-optimization/total?label=Downloads&color=green)](../../releases)
-[![Latest Release](https://img.shields.io/github/v/release/STALART-Community/stalart-jvm-optimization?label=Latest)](../../releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/stalart-community-dev/STALART-Community-JVM/total?label=Downloads&color=green)](../../releases)
+[![Latest Release](https://img.shields.io/github/v/release/stalart-community-dev/STALART-Community-JVM?label=Latest)](../../releases/latest)
 
 ---
 
@@ -65,7 +65,7 @@
 ### Установка
 
 > [!TIP]
-> Самая частая ошибка при установке — положить `jvm_wrapper` куда-то глубоко внутрь `runtime/stalart/...`. Папка должна лежать **в корне директории Stalart Launcher**, рядом с `ExboLink.exe` и каталогом `runtime/`. Вот как это должно выглядеть:
+> Самая частая ошибка при установке — положить `jvm_wrapper` куда-то глубоко внутрь `runtime/stalart/...`. Папка должна лежать **в корне директории Stalart Launcher**, рядом с исполняемым файлом лаунчера и каталогом `runtime/`. Вот как это должно выглядеть:
 >
 > ![Пример расположения папки jvm_wrapper в корне директории лаунчера Stalart](./docs/assets/install-folder-location.jpg)
 
