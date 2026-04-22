@@ -86,7 +86,19 @@ func Dir() string {
 	if err != nil {
 		return filepath.Join(".", "configs")
 	}
-	return filepath.Join(filepath.Dir(self), "configs")
+	exeDir := filepath.Dir(self)
+	exeConfigs := filepath.Join(exeDir, "configs")
+
+	// Dev/build layout: binaries live in build/, canonical presets are in
+	// project-root configs/. Prefer root configs to avoid duplicating runtime
+	// state under build/configs.
+	if strings.EqualFold(filepath.Base(exeDir), "build") {
+		rootConfigs := filepath.Join(filepath.Dir(exeDir), "configs")
+		if st, statErr := os.Stat(rootConfigs); statErr == nil && st.IsDir() {
+			return rootConfigs
+		}
+	}
+	return exeConfigs
 }
 
 // Ensure makes sure the configs directory and a fallback config exist,

@@ -1,15 +1,15 @@
 {
   "heap_size_gb": 8,
   "pre_touch": true,
-  "metaspace_mb": 640,
-  "max_gc_pause_millis": 50,
+  "metaspace_mb": 512,
+  "max_gc_pause_millis": 60,
   "g1_heap_region_size_mb": 16,
-  "g1_new_size_percent": 23,
-  "g1_max_new_size_percent": 50,
-  "g1_reserve_percent": 20,
+  "g1_new_size_percent": 12,
+  "g1_max_new_size_percent": 60,
+  "g1_reserve_percent": 15,
   "g1_heap_waste_percent": 5,
   "g1_mixed_gc_count_target": 3,
-  "initiating_heap_occupancy_percent": 20,
+  "initiating_heap_occupancy_percent": 28,
   "g1_mixed_gc_live_threshold_percent": 90,
   "g1_rset_updating_pause_time_percent": 10,
   "survivor_ratio": 32,
@@ -41,5 +41,5 @@
   "use_thread_priorities": true,
   "thread_priority_policy": 1,
   "use_counter_decay": true,
-  "compile_threshold_scaling": 0.75
+  "compile_threshold_scaling": 0.65
 }
