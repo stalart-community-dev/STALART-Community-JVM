@@ -274,3 +274,7 @@ time=2026-04-22T12:44:38.124+05:00 level=INFO msg="system detected" cores=14 ram
 time=2026-04-22T12:44:38.125+05:00 level=INFO msg="config loaded" name=test_ultra mode=java25-safe heap_gb=8 metaspace_mb=512 parallel_gc=10 conc_gc=5 region_mb=16 pause_ms=40 ihop=22 large_pages=false flags_count=23
 time=2026-04-22T12:44:38.125+05:00 level=INFO msg="process starting" attempt=primary exe=C:\Users\<user>\AppData\Roaming\STALART\updates\java25-windows-x86-64\bin\javaw.exe arg_count=86
 time=2026-04-22T12:44:38.129+05:00 level=INFO msg="process started" attempt=primary pid=5532
+time=2026-04-22T12:48:17.356+05:00 level=INFO msg="process exit summary" attempt=primary preset_name=passthrough preset_mode=passthrough wait_ms=231044 exit_code=0
+time=2026-04-22T12:48:17.356+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=231044
+time=2026-04-22T12:48:20.737+05:00 level=INFO msg="process exit summary" attempt=primary preset_name=test_ultra preset_mode=java25-safe wait_ms=222597 exit_code=0
+time=2026-04-22T12:48:20.737+05:00 level=INFO msg="service exit" code=0 code_i32=0 code_hex=0x0 low8_unsigned=0 low8_as_signed_int8=0 wait_ms=222597
