@@ -17,6 +17,7 @@ import (
 )
 
 const registryPath = `Software\StalartJvmWrapper`
+const fallbackPreset = "legacy_default"
 
 // ErrNotFound is returned when a config file does not exist on disk.
 var ErrNotFound = errors.New("config not found")
@@ -88,7 +89,7 @@ func Dir() string {
 	return filepath.Join(filepath.Dir(self), "configs")
 }
 
-// Ensure makes sure the configs directory and a "default" config exist,
+// Ensure makes sure the configs directory and a fallback config exist,
 // and that an active config is selected in the registry.
 func Ensure(sys sysinfo.Info) error {
 	dir := Dir()
@@ -113,8 +114,8 @@ func Ensure(sys sysinfo.Info) error {
 		return fmt.Errorf("scan configs dir: %w", err)
 	}
 	if len(entries) == 0 {
-		if err := Generate(sys).Save("default"); err != nil {
-			return fmt.Errorf("save default config: %w", err)
+		if err := Generate(sys).Save(fallbackPreset); err != nil {
+			return fmt.Errorf("save %s config: %w", fallbackPreset, err)
 		}
 	}
 
@@ -131,13 +132,13 @@ func Ensure(sys sysinfo.Info) error {
 func RecommendPreset(sys sysinfo.Info) string {
 	switch {
 	case sys.TotalGB() < 12 || sys.CPUThreads <= 4:
-		return "compat"
+		return "legacy_compat"
 	case sys.TotalGB() >= 32 && sys.CPUThreads >= 12 && sys.HasBigCache():
-		return "ultra"
+		return "legacy_ultra"
 	case sys.TotalGB() >= 24 && sys.CPUThreads >= 10:
-		return "performance"
+		return "legacy_performance"
 	default:
-		return "balanced"
+		return "legacy_balanced"
 	}
 }
 
@@ -179,18 +180,23 @@ func Load(name string) (Config, error) {
 // If the selection points at a name with no corresponding file on
 // disk (the user deleted their custom profile after selecting it),
 // or if no selection has been made at all, the function falls back
-// to "default" automatically. The returned name is the config that
+// to legacy_default automatically. The returned name is the config that
 // was actually loaded — comparing it against ActiveName() lets the
 // caller detect that a fallback happened and warn the user.
 func LoadActive() (cfg Config, loadedName string, err error) {
 	requested := ActiveName()
 	if requested == "" {
-		requested = "default"
+		requested = fallbackPreset
 	}
 	cfg, err = Load(requested)
-	if errors.Is(err, ErrNotFound) && requested != "default" {
+	if errors.Is(err, ErrNotFound) {
 		// Selection refers to a profile that no longer exists.
-		// Try the default profile as a safety net.
+		// Try fallback preset first, then legacy compatibility alias.
+		if requested != fallbackPreset {
+			if fallbackCfg, fallbackErr := Load(fallbackPreset); fallbackErr == nil {
+				return fallbackCfg, fallbackPreset, nil
+			}
+		}
 		if fallbackCfg, fallbackErr := Load("default"); fallbackErr == nil {
 			return fallbackCfg, "default", nil
 		}

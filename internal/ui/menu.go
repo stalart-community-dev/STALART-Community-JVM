@@ -76,9 +76,9 @@ func drawHeader(active string, exists bool) {
 	fmt.Println("STALART JVM wrapper (java.exe / javaw.exe IFEO)")
 	fmt.Println("-------------------------------------")
 	if active == "" {
-		fmt.Println("Active config: (none — default.json will be used)")
+		fmt.Println("Active config: (none — legacy_default.json will be used)")
 	} else if !exists {
-		fmt.Printf("Active config: %s  (missing — falls back to default)\n", active)
+		fmt.Printf("Active config: %s  (missing — falls back to legacy_default)\n", active)
 	} else {
 		fmt.Printf("Active config: %s\n", active)
 	}
@@ -170,15 +170,15 @@ func regenerate(sys sysinfo.Info) {
 		fmt.Println("[note] 16 GB RAM: page file recommended for comfort.")
 	}
 
-	if err := cfg.Save("default"); err != nil {
+	if err := cfg.Save("legacy_default"); err != nil {
 		fmt.Printf("[error] Failed to save: %v\n", err)
 		return
 	}
-	if err := config.SetActive("default"); err != nil {
+	if err := config.SetActive("legacy_default"); err != nil {
 		fmt.Printf("[error] Failed to mark active: %v\n", err)
 		return
 	}
-	fmt.Println("[config] Regenerated default config.")
+	fmt.Println("[config] Regenerated legacy_default config.")
 }
 
 func runMenu(items []item) bool {

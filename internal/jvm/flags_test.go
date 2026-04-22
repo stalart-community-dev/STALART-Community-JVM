@@ -38,11 +38,7 @@ func TestFlagsConservativeJDK2501Profile(t *testing.T) {
 	mustNotContain := []string{
 		"-XX:+UnlockExperimentalVMOptions",
 		"-XX:G1HeapRegionSize=",
-		"-XX:G1NewSizePercent=",
-		"-XX:G1MaxNewSizePercent=",
-		"-XX:G1ReservePercent=",
 		"-XX:+G1UseAdaptiveIHOP",
-		"-XX:InitiatingHeapOccupancyPercent=",
 	}
 	for _, f := range mustNotContain {
 		if strings.Contains(joined, f) {
@@ -70,10 +66,19 @@ func TestClientCompatPropsJDK25(t *testing.T) {
 
 func TestJava25SafeFlags(t *testing.T) {
 	cfg := config.Config{
-		MaxGCPauseMillis:        50,
-		ParallelGCThreads:       10,
-		ConcGCThreads:           5,
-		UseStringDeduplication:  true,
+		MaxGCPauseMillis:               50,
+		ParallelGCThreads:              10,
+		ConcGCThreads:                  5,
+		InitiatingHeapOccupancyPercent: 24,
+		G1NewSizePercent:               16,
+		G1MaxNewSizePercent:            65,
+		G1ReservePercent:               15,
+		G1HeapWastePercent:             5,
+		G1MixedGCCountTarget:           4,
+		G1MixedGCLiveThresholdPercent:  90,
+		SurvivorRatio:                  32,
+		MaxTenuringThreshold:           1,
+		UseStringDeduplication:         true,
 	}
 	flags := Java25SafeFlags(cfg)
 	joined := " " + strings.Join(flags, " ") + " "
@@ -82,6 +87,15 @@ func TestJava25SafeFlags(t *testing.T) {
 		"-XX:MaxGCPauseMillis=50",
 		"-XX:ParallelGCThreads=10",
 		"-XX:ConcGCThreads=5",
+		"-XX:InitiatingHeapOccupancyPercent=24",
+		"-XX:G1NewSizePercent=16",
+		"-XX:G1MaxNewSizePercent=65",
+		"-XX:G1ReservePercent=15",
+		"-XX:G1HeapWastePercent=5",
+		"-XX:G1MixedGCCountTarget=4",
+		"-XX:G1MixedGCLiveThresholdPercent=90",
+		"-XX:SurvivorRatio=32",
+		"-XX:MaxTenuringThreshold=1",
 		"-XX:+ParallelRefProcEnabled",
 		"-XX:+DisableExplicitGC",
 		"-XX:+PerfDisableSharedMem",

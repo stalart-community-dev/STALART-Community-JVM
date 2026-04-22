@@ -25,9 +25,9 @@ func Generate(sys sysinfo.Info) Config {
 	// soft-reference cleanup to keep heap pressure down — this is
 	// the hand-tuned combo validated on a 9900KF at ~255 FPS stable
 	// versus ~233 FPS with the previous latency-biased defaults.
-	ihop := 20
-	pauseMs := 50
-	newSizePercent := 23
+	ihop := 28
+	pauseMs := 60
+	newSizePercent := 12
 	mixedCountTarget := 3
 	softRefMs := 25
 
@@ -37,11 +37,11 @@ func Generate(sys sysinfo.Info) Config {
 		// soft-reference retention for texture caches. Memory bandwidth
 		// headroom lets us start concurrent marking earlier without
 		// fear of full GC pressure.
-		ihop = 15
-		pauseMs = 25
-		newSizePercent = 30
+		ihop = 24
+		pauseMs = 45
+		newSizePercent = 16
 		mixedCountTarget = 4
-		softRefMs = 50
+		softRefMs = 35
 		// Extra concurrent worker only if the OS exposes at least 16
 		// logical threads. The naive "cores >= 8" check fires on a
 		// 5800X3D / 7800X3D running in "gaming mode" with SMT disabled
@@ -58,13 +58,13 @@ func Generate(sys sysinfo.Info) Config {
 		HeapSizeGB: int(heap),
 		// PreTouch commits Xms eagerly; only enable with plenty of headroom.
 		PreTouch:    sys.TotalGB() >= 16,
-		MetaspaceMB: 640,
+		MetaspaceMB: 512,
 
 		MaxGCPauseMillis:               pauseMs,
 		G1HeapRegionSizeMB:             regionSize(heap),
 		G1NewSizePercent:               newSizePercent,
-		G1MaxNewSizePercent:            50,
-		G1ReservePercent:               20,
+		G1MaxNewSizePercent:            60,
+		G1ReservePercent:               15,
 		G1HeapWastePercent:             5,
 		G1MixedGCCountTarget:           mixedCountTarget,
 		InitiatingHeapOccupancyPercent: ihop,
@@ -77,9 +77,9 @@ func Generate(sys sysinfo.Info) Config {
 		// Removed as JVM options in JDK 21+; kept in JSON for older profiles.
 		G1ConcRSHotCardLimit:                  0,
 		G1ConcRefinementServiceIntervalMillis: 0,
-		GCTimeRatio:                            99,
-		UseDynamicNumberOfGCThreads:            true,
-		UseStringDeduplication:                 true,
+		GCTimeRatio:                           99,
+		UseDynamicNumberOfGCThreads:           true,
+		UseStringDeduplication:                true,
 
 		ParallelGCThreads:       parallel,
 		ConcGCThreads:           concurrent,
@@ -106,8 +106,8 @@ func Generate(sys sysinfo.Info) Config {
 		UseThreadPriorities:          true,
 		ThreadPriorityPolicy:         1,
 		// Not emitted on JDK 25 (UseCounterDecay flag removed from HotSpot).
-		UseCounterDecay: true,
-		CompileThresholdScaling:      0.75,
+		UseCounterDecay:         true,
+		CompileThresholdScaling: 0.65,
 	}
 }
 
@@ -126,33 +126,72 @@ func Presets(sys sysinfo.Info) map[string]Config {
 	}
 
 	performance := balanced
-	performance.MaxGCPauseMillis = 35
+	performance.MaxGCPauseMillis = 50
 	if performance.ParallelGCThreads < 8 {
 		performance.ParallelGCThreads = 8
 	}
 	if performance.ConcGCThreads < 4 {
 		performance.ConcGCThreads = 4
 	}
-	performance.G1NewSizePercent = 30
+	performance.G1NewSizePercent = 18
+	performance.G1MaxNewSizePercent = 65
 	performance.G1MixedGCCountTarget = 4
-	performance.SoftRefLRUPolicyMSPerMB = 50
+	performance.InitiatingHeapOccupancyPercent = 25
+	performance.SoftRefLRUPolicyMSPerMB = 35
+	performance.CompileThresholdScaling = 0.7
 
 	ultra := performance
 	ultra.PreTouch = sys.TotalGB() >= 16
 	if ultra.HeapSizeGB < 8 && sys.TotalGB() >= 24 {
 		ultra.HeapSizeGB = 8
 	}
-	ultra.MaxGCPauseMillis = 30
+	ultra.MaxGCPauseMillis = 45
 	ultra.ParallelGCThreads = clamp(ultra.ParallelGCThreads+1, 2, 10)
 	ultra.ConcGCThreads = clamp(ultra.ConcGCThreads+1, 1, 5)
-	ultra.InitiatingHeapOccupancyPercent = 15
+	ultra.InitiatingHeapOccupancyPercent = 22
+	ultra.G1NewSizePercent = 20
+	ultra.G1MaxNewSizePercent = 70
+	ultra.SoftRefLRUPolicyMSPerMB = 30
+
+	testBalanced := balanced
+	testBalanced.MaxGCPauseMillis = 50
+	testBalanced.G1NewSizePercent = 16
+	testBalanced.G1MaxNewSizePercent = 65
+	testBalanced.G1MixedGCCountTarget = 4
+	testBalanced.InitiatingHeapOccupancyPercent = 26
+	testBalanced.SoftRefLRUPolicyMSPerMB = 30
+	testBalanced.CompileThresholdScaling = 0.7
+
+	testPerformance := testBalanced
+	testPerformance.MaxGCPauseMillis = 45
+	testPerformance.ParallelGCThreads = clamp(testPerformance.ParallelGCThreads+1, 2, 10)
+	testPerformance.ConcGCThreads = clamp(testPerformance.ConcGCThreads+1, 1, 5)
+	testPerformance.G1NewSizePercent = 20
+	testPerformance.G1MaxNewSizePercent = 70
+	testPerformance.InitiatingHeapOccupancyPercent = 24
+	testPerformance.SoftRefLRUPolicyMSPerMB = 35
+	testPerformance.MaxInlineLevel = clamp(testPerformance.MaxInlineLevel+2, 12, 24)
+	testPerformance.FreqInlineSize = testPerformance.FreqInlineSize + 100
+	testPerformance.InlineSmallCode = testPerformance.InlineSmallCode + 500
+	testPerformance.MaxNodeLimit = testPerformance.MaxNodeLimit + 30000
+
+	testUltra := testPerformance
+	testUltra.MaxGCPauseMillis = 40
+	testUltra.G1MixedGCCountTarget = 5
+	testUltra.InitiatingHeapOccupancyPercent = 22
+	testUltra.G1HeapWastePercent = 4
+	testUltra.SoftRefLRUPolicyMSPerMB = 40
+	testUltra.CompileThresholdScaling = 0.75
 
 	return map[string]Config{
-		"default":     balanced,
-		"compat":      compat,
-		"balanced":    balanced,
-		"performance": performance,
-		"ultra":       ultra,
+		"legacy_default":     balanced,
+		"legacy_compat":      compat,
+		"legacy_balanced":    balanced,
+		"legacy_performance": performance,
+		"legacy_ultra":       ultra,
+		"test_balanced":      testBalanced,
+		"test_performance":   testPerformance,
+		"test_ultra":         testUltra,
 	}
 }
 
