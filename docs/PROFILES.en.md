@@ -1,25 +1,19 @@
-# Presets
+# Configuration profile
 
-## Preset goals
+The JDK 25 branch uses a single primary profile: `stable`.
 
-Presets provide ready JVM tuning sets for different priorities:
+## What this means
 
-- `compat` — maximum compatibility;
-- `balanced` — stable baseline for most PCs;
-- `performance` — more aggressive throughput;
-- `ultra` — high-end focus.
+- default configuration file: `configs/stable.json`;
+- active profile is stored at `HKCU\\Software\\StalartJvmWrapper`;
+- `cli.exe --autotune` sets `stable` as the active profile;
+- `Reset Config` recreates `stable` with default values.
 
-## Practical selection flow
+## When custom JSON profiles are needed
 
-1. Start with `balanced`.
-2. Apply `Apply Recommended Config` (or `cli.exe --autotune`).
-3. Optionally compare nearby presets manually in the same in-game scenario.
+You can still add custom profiles manually into `configs/` and switch them via `Select Config`.
+For production usage, `stable` remains the baseline.
 
-## Where to inspect results
+## Where to inspect runtime behavior
 
 - `logs/wrapper.log`
-
-## Notes
-
-- Start with hardware-recommended preset first.
-- Do manual fine tuning only after long real gameplay tests.

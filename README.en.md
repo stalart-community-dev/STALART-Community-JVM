@@ -3,56 +3,42 @@
 [![eng](https://img.shields.io/badge/lang-English-blue)](README.en.md)
 [![ru](https://img.shields.io/badge/lang-Russian-blue)](README.md)
 
-Unofficial utility for optimizing JVM startup in Stalart on Windows.
+Unofficial utility for optimizing JVM startup in Stalart on Windows (JDK 25 branch).
 
-## What this project does
+## Features
 
-- installs IFEO interception so `java.exe`/`javaw.exe` launches through `service.exe`;
-- loads the active profile from `configs/*.json`;
-- injects JVM flags for game launches;
-- writes basic launch diagnostics to `logs/wrapper.log`;
-- auto-selects recommended preset by hardware.
+- installs IFEO interception for `java.exe` / `javaw.exe` through `service.exe`;
+- applies a **single stable profile** from `configs/stable.json`;
+- filters conflicting launcher flags and injects safe JVM options;
+- writes launch diagnostics to `logs/wrapper.log`.
 
 ## How it works
 
 1. User runs `cli.exe` and selects `Install`.
 2. Windows registers `service.exe` as IFEO debugger for Java processes.
 3. On game launch, Windows starts `service.exe` first.
-4. `service.exe` validates launch context, applies profile, starts JVM, waits for exit.
-5. On exit it writes process status and diagnostics.
+4. `service.exe` validates launch context, applies the `stable` profile, and starts JVM.
+5. On exit it writes status and diagnostics to the log.
 
 Detailed flow: [docs/OVERVIEW.en.md](./docs/OVERVIEW.en.md).
 
 ## Quick start
 
-1. Extract release files into `jvm_wrapper` next to Stalart launcher.
+1. Extract release files into `jvm_wrapper` next to the Stalart launcher.
 2. Run `cli.exe` as administrator.
 3. Select `Install`.
-4. Select `Apply Recommended Config`.
-5. Launch the game.
-6. Switch profiles later via `Select Config` if needed.
+4. Launch the game.
 
-## Configs and presets
+## Configuration
 
-- Active profile key: `HKCU\\Software\\StalartWrapper`.
-- Base profile: `configs/default.json`.
-- Built-in presets: `compat`, `balanced`, `performance`, `ultra`.
-- Default recommendation: `balanced`.
-- Preset overview: [docs/PROFILES.en.md](./docs/PROFILES.en.md).
-- JSON parameters: [docs/PARAMS.en.md](./docs/PARAMS.en.md).
+- active profile key: `HKCU\\Software\\StalartJvmWrapper`;
+- default profile file: `configs/stable.json`;
+- CLI actions:
+  - `Select Config` to switch profile (if you added custom JSON profiles),
+  - `Reset Config` to recreate `stable.json` defaults,
+  - `cli.exe --autotune` to set `stable` as active profile.
 
-## Hardware-based auto tune
-
-- Global log: `logs/wrapper.log`.
-- Auto-pick preset:
-  - menu: `Apply Recommended Config`
-  - CLI: `cli.exe --autotune`
-
-Selection logic:
-- `compat` for low-end systems,
-- `balanced` for most systems,
-- `performance` for stronger systems,
-- `ultra` for high-end big-cache systems.
+JSON parameters: [docs/PARAMS.en.md](./docs/PARAMS.en.md).
 
 ## Troubleshooting
 
@@ -61,12 +47,17 @@ See [docs/TROUBLESHOOTING.en.md](./docs/TROUBLESHOOTING.en.md).
 ## Build
 
 ```bash
-go build -o build/cli.exe ./cmd/cli
-go build -o build/service.exe ./cmd/service
+go build -trimpath -ldflags="-s -w" -o build/cli.exe ./cmd/cli
+go build -trimpath -ldflags="-s -w" -o build/service.exe ./cmd/service
 ```
+
+## Credits
+
+- [SilentBless](https://github.com/SilentBless) — original idea and early JVM-wrapper architecture.
+- [stalart-community-dev](https://github.com/stalart-community-dev/stalart-community-jvm) — ongoing JDK 25 branch development.
 
 ## Disclaimer
 
 - This utility is not affiliated with the game developer.
 - Use at your own risk.
-- Do not contact game support for this utility; use repository Issues instead.
+- For utility-related issues, use repository Issues.

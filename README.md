@@ -3,25 +3,22 @@
 [![eng](https://img.shields.io/badge/lang-English-blue)](README.en.md)
 [![ru](https://img.shields.io/badge/lang-Russian-blue)](README.md)
 
-Неофициальная утилита для оптимизации запуска JVM в Stalart на Windows.
+Неофициальная утилита для оптимизации запуска JVM в Stalart на Windows (ветка JDK 25).
 
-## Что делает проект
+## Возможности
 
-- устанавливает IFEO-перехват для запуска `java.exe`/`javaw.exe` через `service.exe`;
-- загружает активный профиль из `configs/*.json`;
-- подставляет JVM-флаги для игрового запуска;
-- пишет базовый технический лог запуска в `logs/wrapper.log`;
-- автоматически подбирает рекомендованный пресет по железу.
+- устанавливает IFEO-перехват для `java.exe` / `javaw.exe` через `service.exe`;
+- применяет **единый стабильный профиль** `configs/stable.json` для игрового запуска;
+- фильтрует конфликтующие флаги лаунчера и подставляет безопасные JVM-параметры;
+- пишет технический лог запуска в `logs/wrapper.log`.
 
-## Как это работает
+## Как работает
 
-**JVM (Java Virtual Machine)** — это среда выполнения, через которую работает [Stalart](https://stalart.net/).
-
-1. Пользователь запускает `cli.exe` и выполняет `Install`.
+1. Пользователь запускает `cli.exe` и выбирает `Install`.
 2. Windows регистрирует `service.exe` как IFEO debugger для Java-процесса.
-3. При запуске игры Windows сначала запускает `service.exe`.
-4. `service.exe` проверяет сценарий запуска, применяет профиль, стартует JVM и ждет завершения процесса.
-5. После выхода пишет код завершения и служебную диагностику.
+3. При старте игры Windows сначала запускает `service.exe`.
+4. `service.exe` проверяет сценарий запуска, применяет `stable`-конфиг и стартует JVM.
+5. После завершения процесса пишет код выхода и диагностику в лог.
 
 Подробная схема: [docs/OVERVIEW.md](./docs/OVERVIEW.md).
 
@@ -30,31 +27,18 @@
 1. Распакуйте релиз в `jvm_wrapper` рядом с лаунчером Stalart.
 2. Запустите `cli.exe` от имени администратора.
 3. Выберите `Install`.
-4. Выберите `Apply Recommended Config`.
-5. Запустите игру.
-6. При необходимости выберите другой профиль через `Select Config`.
+4. Запустите игру.
 
-## Конфиги и пресеты
+## Конфигурация
 
-- Активный профиль хранится в `HKCU\\Software\\StalartWrapper`.
-- Базовый профиль: `configs/default.json`.
-- Готовые пресеты: `compat`, `balanced`, `performance`, `ultra`.
-- Рекомендованный по умолчанию: `balanced`.
-- Таблица пресетов: [docs/PROFILES.md](./docs/PROFILES.md).
-- Параметры JSON: [docs/PARAMS.md](./docs/PARAMS.md).
+- активный профиль хранится в `HKCU\\Software\\StalartJvmWrapper`;
+- основной профиль: `configs/stable.json`;
+- в CLI доступны:
+  - `Select Config` — выбрать активный JSON (если добавлены кастомные профили),
+  - `Reset Config` — пересоздать `stable.json` значениями по умолчанию,
+  - `cli.exe --autotune` — выставить активным `stable`.
 
-## Автоподбор по железу
-
-- Общий лог: `logs/wrapper.log`.
-- Автоподбор пресета:
-  - меню: `Apply Recommended Config`
-  - CLI: `cli.exe --autotune`
-
-Логика выбора:
-- `compat` для слабых систем (мало RAM/потоков),
-- `balanced` для большинства конфигураций,
-- `performance` для сильных систем,
-- `ultra` для high-end с большим кешем/ресурсами.
+Параметры JSON: [docs/PARAMS.md](./docs/PARAMS.md).
 
 ## Troubleshooting
 
@@ -63,12 +47,17 @@
 ## Сборка
 
 ```bash
-go build -o build/cli.exe ./cmd/cli
-go build -o build/service.exe ./cmd/service
+go build -trimpath -ldflags="-s -w" -o build/cli.exe ./cmd/cli
+go build -trimpath -ldflags="-s -w" -o build/service.exe ./cmd/service
 ```
+
+## Credits
+
+- [SilentBless](https://github.com/SilentBless) — оригинальная идея и ранняя архитектура JVM-wrapper.
+- [stalart-community-dev](https://github.com/stalart-community-dev/stalart-community-jvm) — развитие ветки JDK 25.
 
 ## Дисклеймер
 
 - Утилита не аффилирована с разработчиками игры.
 - Используйте на свой риск.
-- Не обращайтесь в техподдержку игры по вопросам этой утилиты — используйте Issues в репозитории.
+- По вопросам утилиты используйте Issues репозитория.
