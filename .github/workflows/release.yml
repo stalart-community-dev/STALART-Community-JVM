@@ -60,7 +60,7 @@ jobs:
         shell: pwsh
         run: |
           Compress-Archive `
-            -Path build/cli.exe, build/service.exe, examples `
+            -Path build/cli.exe, build/service.exe, configs `
             -DestinationPath build/stalart-wrapper.zip `
             -Force
 
