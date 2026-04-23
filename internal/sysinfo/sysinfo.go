@@ -152,7 +152,7 @@ func physicalCores() int {
 var (
 	procOpenProcessToken      = winapi.Advapi32.NewProc("OpenProcessToken")
 	procLookupPrivilegeValueW = winapi.Advapi32.NewProc("LookupPrivilegeValueW")
-	procPrivilegeCheck        = winapi.Advapi32.NewProc("PrivilegeCheck")
+	procGetTokenInformation   = winapi.Advapi32.NewProc("GetTokenInformation")
 )
 
 type luid struct {
@@ -160,26 +160,18 @@ type luid struct {
 	HighPart int32
 }
 
-type luidAndAttributes struct {
-	Luid       luid
-	Attributes uint32
-}
-
-type privilegeSet struct {
-	PrivilegeCount uint32
-	Control        uint32
-	Privilege      [1]luidAndAttributes
-}
-
-// hasLargePagePrivilege probes SeLockMemoryPrivilege on the current token.
-// Required to use -XX:+UseLargePages without it JVM silently degrades.
+// hasLargePagePrivilege reports whether SeLockMemoryPrivilege is assigned to
+// the current process token (present in the privilege list, regardless of
+// enabled state). The JVM enables the privilege itself via AdjustTokenPrivileges
+// at startup — checking for the enabled bit here gives false negatives when the
+// privilege is assigned in Local Security Policy but not yet activated.
 func hasLargePagePrivilege() bool {
 	proc, err := syscall.GetCurrentProcess()
 	if err != nil {
 		return false
 	}
 	var token syscall.Handle
-	if ret, _, _ := procOpenProcessToken.Call(uintptr(proc), 0x0008, uintptr(unsafe.Pointer(&token))); ret == 0 {
+	if ret, _, _ := procOpenProcessToken.Call(uintptr(proc), 0x0008 /*TOKEN_QUERY*/, uintptr(unsafe.Pointer(&token))); ret == 0 {
 		return false
 	}
 	defer syscall.CloseHandle(token)
@@ -193,13 +185,32 @@ func hasLargePagePrivilege() bool {
 		return false
 	}
 
-	ps := privilegeSet{
-		PrivilegeCount: 1,
-		Privilege:      [1]luidAndAttributes{{Luid: id, Attributes: 0x00000002}},
+	// Query required buffer size for TOKEN_PRIVILEGES (class = 3).
+	var needed uint32
+	procGetTokenInformation.Call(uintptr(token), 3, 0, 0, uintptr(unsafe.Pointer(&needed)))
+	if needed == 0 {
+		return false
 	}
-	var result int32
-	ret, _, _ := procPrivilegeCheck.Call(uintptr(token), uintptr(unsafe.Pointer(&ps)), uintptr(unsafe.Pointer(&result)))
-	return ret != 0 && result != 0
+	buf := make([]byte, needed)
+	if ret, _, _ := procGetTokenInformation.Call(
+		uintptr(token), 3,
+		uintptr(unsafe.Pointer(&buf[0])), uintptr(needed),
+		uintptr(unsafe.Pointer(&needed)),
+	); ret == 0 {
+		return false
+	}
+
+	// TOKEN_PRIVILEGES layout: uint32 count, then count × LUID_AND_ATTRIBUTES
+	// (8-byte LUID + 4-byte Attributes = 12 bytes each).
+	count := *(*uint32)(unsafe.Pointer(&buf[0]))
+	for i := uint32(0); i < count; i++ {
+		off := 4 + i*12
+		privLuid := *(*luid)(unsafe.Pointer(&buf[off]))
+		if privLuid.LowPart == id.LowPart && privLuid.HighPart == id.HighPart {
+			return true
+		}
+	}
+	return false
 }
 
 // Describe returns a single-line human summary, used in the interactive menu.
