@@ -70,22 +70,46 @@ func TestIsLikelyGameLaunch(t *testing.T) {
 	}
 }
 
-func TestStripJava25IncompatibleArgs(t *testing.T) {
-	args := []string{
+func TestFilterArgsStripsLegacyAndG1Flags(t *testing.T) {
+	orig := []string{
 		"--illegal-access=warn",
 		"-XX:+UseConcMarkSweepGC",
 		"-XX:MaxPermSize=256m",
+		"-XX:+UseG1GC",
+		"-XX:MaxGCPauseMillis=200",
+		"-Xmx4g",
 		"--add-opens", "java.base/java.lang=ALL-UNNAMED",
 		"-cp", "lib.jar",
 		"com.example.Main", "--gameDir", "C:/game",
 	}
-	got := StripJava25IncompatibleArgs(args)
-	want := []string{
-		"--add-opens", "java.base/java.lang=ALL-UNNAMED",
-		"-cp", "lib.jar",
-		"com.example.Main", "--gameDir", "C:/game",
+	injected := []string{"-XX:+UseZGC", "-Xmx8g"}
+	got := FilterArgs(orig, injected)
+
+	for _, bad := range []string{
+		"-XX:+UseConcMarkSweepGC",
+		"-XX:MaxPermSize=256m",
+		"-XX:+UseG1GC",
+		"-XX:MaxGCPauseMillis=200",
+		"-Xmx4g",
+		"--illegal-access=warn",
+	} {
+		for _, g := range got {
+			if g == bad {
+				t.Fatalf("FilterArgs kept legacy flag %q", bad)
+			}
+		}
 	}
-	if !reflect.DeepEqual(got, want) {
-		t.Fatalf("got %#v want %#v", got, want)
+
+	for _, want := range []string{"-XX:+UseZGC", "-Xmx8g", "com.example.Main", "--gameDir"} {
+		found := false
+		for _, g := range got {
+			if g == want {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("FilterArgs dropped required arg %q: %v", want, got)
+		}
 	}
 }

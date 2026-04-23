@@ -2,88 +2,40 @@ package config
 
 import "stalart-wrapper/internal/sysinfo"
 
-// Generate produces a performance-oriented Config for the given hardware.
+// Generate produces a ZGC-optimised Config for the given hardware.
 //
-// The profile maximizes smooth JVM behavior for the bundled OpenJDK used
-// by the game client. Values are not scaled down to save resources.
-//
-// Only heap size, G1 region size and GC thread count actually depend
-// on memory and core count; the JIT/inlining block is scaled by L3
-// cache size (X3D-class parts get deeper inlining and a larger node
-// budget because their compiled hot path fits entirely in L3).
-// Everything else is a fixed default tuned for HotSpot in JDK 25 (G1).
+// Heap size, GC thread counts, and JIT inlining limits are derived from
+// detected RAM and CPU topology. ZGC allocation spike tolerance is scaled
+// with available cache bandwidth: X3D-class parts can absorb larger spikes
+// without GC stalls because their hot working set fits in L3.
 func Generate(sys sysinfo.Info) Config {
 	heap := sizeHeap(sys.TotalGB())
 	parallel, concurrent := gcThreads(sys.CPUThreads)
 	jit := jitProfile(sys)
 
-	// Throughput-first defaults for mainstream CPUs. A loose 50 ms
-	// pause target lets G1 pick natural-sized young collections
-	// instead of slicing them into smaller, more frequent pauses that
-	// miss a tighter target anyway. Pair it with a smaller young gen
-	// minimum and fewer but larger mixed GC cycles, and aggressive
-	// soft-reference cleanup to keep heap pressure down — this is
-	// the hand-tuned combo validated on a 9900KF at ~255 FPS stable
-	// versus ~233 FPS with the previous latency-biased defaults.
-	ihop := 28
-	pauseMs := 60
-	newSizePercent := 12
-	mixedCountTarget := 3
-	softRefMs := 25
-
+	spikeTolerance := 5.0
+	fragLimit := 15
 	if sys.HasBigCache() {
-		// X3D-class parts can realistically hit a tight pause budget
-		// and benefit from a slightly larger young gen plus longer
-		// soft-reference retention for texture caches. Memory bandwidth
-		// headroom lets us start concurrent marking earlier without
-		// fear of full GC pressure.
-		ihop = 24
-		pauseMs = 45
-		newSizePercent = 16
-		mixedCountTarget = 4
-		softRefMs = 35
-		// Extra concurrent worker only if the OS exposes at least 16
-		// logical threads. The naive "cores >= 8" check fires on a
-		// 5800X3D / 7800X3D running in "gaming mode" with SMT disabled
-		// (8C/8T) and pushes concurrent to 4 — that's 50 % of the CPU
-		// taken from the game during marking. Requiring 16+ threads
-		// guarantees at least one HT sibling pool to absorb the extra
-		// worker without starving the render thread.
+		// X3D-class parts handle higher allocation spikes well: large L3
+		// absorbs the burst before ZGC's concurrent phase catches up.
+		spikeTolerance = 10.0
+		fragLimit = 10
 		if sys.CPUThreads >= 16 {
 			concurrent++
 		}
 	}
 
 	return Config{
-		HeapSizeGB: int(heap),
-		// PreTouch commits Xms eagerly; only enable with plenty of headroom.
+		HeapSizeGB:  int(heap),
 		PreTouch:    sys.TotalGB() >= 16,
 		MetaspaceMB: 512,
 
-		MaxGCPauseMillis:               pauseMs,
-		G1HeapRegionSizeMB:             regionSize(heap),
-		G1NewSizePercent:               newSizePercent,
-		G1MaxNewSizePercent:            60,
-		G1ReservePercent:               15,
-		G1HeapWastePercent:             5,
-		G1MixedGCCountTarget:           mixedCountTarget,
-		InitiatingHeapOccupancyPercent: ihop,
-		G1MixedGCLiveThresholdPercent:  90,
-		G1RSetUpdatingPauseTimePercent: 10,
-		SurvivorRatio:                  32,
-		MaxTenuringThreshold:           1,
+		ZAllocationSpikeTolerance: spikeTolerance,
+		ZCollectionIntervalSec:    0,
+		ZFragmentationLimit:       fragLimit,
 
-		G1SATBBufferEnqueueingThresholdPercent: 30,
-		// Removed as JVM options in JDK 21+; kept in JSON for older profiles.
-		G1ConcRSHotCardLimit:                  0,
-		G1ConcRefinementServiceIntervalMillis: 0,
-		GCTimeRatio:                           99,
-		UseDynamicNumberOfGCThreads:           true,
-		UseStringDeduplication:                true,
-
-		ParallelGCThreads:       parallel,
-		ConcGCThreads:           concurrent,
-		SoftRefLRUPolicyMSPerMB: softRefMs,
+		ParallelGCThreads: parallel,
+		ConcGCThreads:     concurrent,
 
 		ReservedCodeCacheSizeMB: 512,
 		MaxInlineLevel:          jit.maxInlineLevel,
@@ -91,113 +43,60 @@ func Generate(sys sysinfo.Info) Config {
 		InlineSmallCode:         jit.inlineSmallCode,
 		MaxNodeLimit:            jit.maxNodeLimit,
 		NodeLimitFudgeFactor:    8000,
-		NmethodSweepActivity:    1,
-		DontCompileHugeMethods:  false,
-		AllocatePrefetchStyle:   3,
-		AlwaysActAsServerClass:  true,
-		// JDK 25: rely on C2 defaults; x86 micro-opts are low value / platform-sensitive.
-		UseXMMForArrayCopy: false,
-		UseFPUForSpilling:  false,
-
-		UseLargePages: sys.LargePages,
-
-		ReflectionInflationThreshold: 0,
-		AutoBoxCacheMax:              8192,
-		UseThreadPriorities:          true,
-		ThreadPriorityPolicy:         1,
-		// Not emitted on JDK 25 (UseCounterDecay flag removed from HotSpot).
-		UseCounterDecay:         true,
 		CompileThresholdScaling: 0.65,
+
+		UseLargePages:        sys.LargePages,
+		UseThreadPriorities:  true,
+		ThreadPriorityPolicy: 1,
+		AutoBoxCacheMax:      8192,
 	}
 }
 
 // Presets returns named tuning profiles derived from current hardware.
-// These profiles are intentionally conservative-to-aggressive and can be
-// selected by users as regular config files.
 func Presets(sys sysinfo.Info) map[string]Config {
 	balanced := Generate(sys)
 
 	compat := balanced
 	compat.PreTouch = false
-	compat.MaxGCPauseMillis = 60
+	compat.ZAllocationSpikeTolerance = 2.0
+	compat.ZFragmentationLimit = 20
 	compat.ParallelGCThreads, compat.ConcGCThreads = 4, 2
+	compat.MetaspaceMB = 384
+	compat.ReservedCodeCacheSizeMB = 256
 	if compat.HeapSizeGB > 6 {
 		compat.HeapSizeGB = 6
 	}
+	compat.CompileThresholdScaling = 0.6
 
 	performance := balanced
-	performance.MaxGCPauseMillis = 50
-	if performance.ParallelGCThreads < 8 {
-		performance.ParallelGCThreads = 8
-	}
-	if performance.ConcGCThreads < 4 {
-		performance.ConcGCThreads = 4
-	}
-	performance.G1NewSizePercent = 18
-	performance.G1MaxNewSizePercent = 65
-	performance.G1MixedGCCountTarget = 4
-	performance.InitiatingHeapOccupancyPercent = 25
-	performance.SoftRefLRUPolicyMSPerMB = 35
+	performance.PreTouch = sys.TotalGB() >= 12
+	performance.ZAllocationSpikeTolerance = 7.0
+	performance.ZFragmentationLimit = 10
+	performance.ParallelGCThreads = clamp(balanced.ParallelGCThreads+1, 4, 10)
+	performance.ConcGCThreads = clamp(balanced.ConcGCThreads+1, 2, 5)
 	performance.CompileThresholdScaling = 0.7
 
 	ultra := performance
 	ultra.PreTouch = sys.TotalGB() >= 16
-	if ultra.HeapSizeGB < 8 && sys.TotalGB() >= 24 {
-		ultra.HeapSizeGB = 8
-	}
-	ultra.MaxGCPauseMillis = 45
-	ultra.ParallelGCThreads = clamp(ultra.ParallelGCThreads+1, 2, 10)
-	ultra.ConcGCThreads = clamp(ultra.ConcGCThreads+1, 1, 5)
-	ultra.InitiatingHeapOccupancyPercent = 22
-	ultra.G1NewSizePercent = 20
-	ultra.G1MaxNewSizePercent = 70
-	ultra.SoftRefLRUPolicyMSPerMB = 30
-
-	testBalanced := balanced
-	testBalanced.MaxGCPauseMillis = 50
-	testBalanced.G1NewSizePercent = 16
-	testBalanced.G1MaxNewSizePercent = 65
-	testBalanced.G1MixedGCCountTarget = 4
-	testBalanced.InitiatingHeapOccupancyPercent = 26
-	testBalanced.SoftRefLRUPolicyMSPerMB = 30
-	testBalanced.CompileThresholdScaling = 0.7
-
-	testPerformance := testBalanced
-	testPerformance.MaxGCPauseMillis = 45
-	testPerformance.ParallelGCThreads = clamp(testPerformance.ParallelGCThreads+1, 2, 10)
-	testPerformance.ConcGCThreads = clamp(testPerformance.ConcGCThreads+1, 1, 5)
-	testPerformance.G1NewSizePercent = 20
-	testPerformance.G1MaxNewSizePercent = 70
-	testPerformance.InitiatingHeapOccupancyPercent = 24
-	testPerformance.SoftRefLRUPolicyMSPerMB = 35
-	testPerformance.MaxInlineLevel = clamp(testPerformance.MaxInlineLevel+2, 12, 24)
-	testPerformance.FreqInlineSize = testPerformance.FreqInlineSize + 100
-	testPerformance.InlineSmallCode = testPerformance.InlineSmallCode + 500
-	testPerformance.MaxNodeLimit = testPerformance.MaxNodeLimit + 30000
-
-	testUltra := testPerformance
-	testUltra.MaxGCPauseMillis = 40
-	testUltra.G1MixedGCCountTarget = 5
-	testUltra.InitiatingHeapOccupancyPercent = 22
-	testUltra.G1HeapWastePercent = 4
-	testUltra.SoftRefLRUPolicyMSPerMB = 40
-	testUltra.CompileThresholdScaling = 0.75
+	ultra.ZAllocationSpikeTolerance = 10.0
+	ultra.ZFragmentationLimit = 10
+	ultra.MetaspaceMB = 640
+	ultra.ParallelGCThreads = clamp(performance.ParallelGCThreads+1, 4, 10)
+	ultra.ConcGCThreads = clamp(performance.ConcGCThreads+1, 2, 5)
+	ultra.MaxInlineLevel = clamp(ultra.MaxInlineLevel+2, 15, 24)
+	ultra.FreqInlineSize = ultra.FreqInlineSize + 100
+	ultra.InlineSmallCode = ultra.InlineSmallCode + 500
+	ultra.MaxNodeLimit = ultra.MaxNodeLimit + 30000
+	ultra.CompileThresholdScaling = 0.75
 
 	return map[string]Config{
-		"legacy_default":     balanced,
-		"legacy_compat":      compat,
-		"legacy_balanced":    balanced,
-		"legacy_performance": performance,
-		"legacy_ultra":       ultra,
-		"test_balanced":      testBalanced,
-		"test_performance":   testPerformance,
-		"test_ultra":         testUltra,
+		"balanced":    balanced,
+		"compat":      compat,
+		"performance": performance,
+		"ultra":       ultra,
 	}
 }
 
-// jitProfile scales C2 inlining limits with L3 cache. On normal CPUs
-// a deeply inlined hot path spills out of L3; on X3D-class parts the
-// full compiled working set fits, so deeper inlining is pure win.
 type jitLimits struct {
 	maxInlineLevel  int
 	freqInlineSize  int
@@ -222,12 +121,9 @@ func jitProfile(sys sysinfo.Info) jitLimits {
 	}
 }
 
-// sizeHeap picks a heap size between 2 and 8 GB based on total RAM.
-//
-// We cap at 8 GB on purpose: typical client live working set is ~2-3 GB,
-// and larger heaps only inflate G1 scan time without helping throughput.
-// The 2 GB floor is the minimum that lets G1 run efficiently; anything
-// below and the game runs, but full GCs dominate.
+// sizeHeap picks a heap between 2 and 8 GB based on total RAM.
+// ZGC scales well with larger heaps, but the game's live set stays
+// ~2–3 GB regardless — capping at 8 GB avoids wasted reservation.
 func sizeHeap(totalGB uint64) uint64 {
 	switch {
 	case totalGB >= 24:
@@ -245,47 +141,13 @@ func sizeHeap(totalGB uint64) uint64 {
 	}
 }
 
-// gcThreads derives the STW and concurrent GC worker counts from the
-// total logical thread count reported by the OS (runtime.NumCPU).
-//
-// Parallel workers only run during STW — the game thread is stopped
-// anyway, so HT/SMT siblings are free to do GC work without any
-// contention. We scale parallel as "threads − 2" (leaving two threads
-// to the OS and background services even during STW) and cap at 10
-// where G1 hits diminishing returns on consumer hardware.
-//
-// Concurrent workers share CPU with the running game, so they stay
-// a bit more conservative: roughly half of parallel, floor 1, ceiling 5.
-// A 9900KF benchmark showed that 5 concurrent workers (matching the
-// hand-tuned max.json preset) materially outperformed 4 under
-// sustained allocation pressure, hence the bump from 4 to 5.
-//
-// Using logical threads (runtime.NumCPU) instead of physical_cores×2
-// is essential for correctness on CPUs without SMT/HT: an Intel
-// i5-9600KF is 6C/6T, not 6C/12T, and feeding 10 parallel workers to
-// a 6-thread CPU oversubscribes it by 1.67× — context switching
-// overhead wipes out the throughput gain from extra workers.
+// gcThreads derives STW and concurrent worker counts from logical thread count.
+// Parallel workers run during STW (game paused, siblings free for GC work).
+// Concurrent workers share CPU with the game — kept at ~half of parallel.
 func gcThreads(threads int) (parallel, concurrent int) {
 	parallel = clamp(threads-2, 2, 10)
 	concurrent = clamp(parallel/2, 1, 5)
 	return
-}
-
-// regionSize matches G1 region granularity to heap size. JVM only
-// accepts powers of two between 1 and 32 MB; larger regions mean fewer
-// RSet scans, smaller regions mean finer mixed-GC control. sizeHeap
-// caps heap at 8 GB, so 16 MB is the upper choice in practice —
-// 32 MB regions would leave only 256 regions at 8 GB heap, hurting
-// mixed-GC selection granularity.
-func regionSize(heapGB uint64) int {
-	switch {
-	case heapGB <= 3:
-		return 4
-	case heapGB <= 5:
-		return 8
-	default:
-		return 16
-	}
 }
 
 func clamp(v, lo, hi int) int {

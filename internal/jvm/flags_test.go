@@ -7,15 +7,15 @@ import (
 	"stalart-wrapper/internal/config"
 )
 
-func TestFlagsConservativeJDK2501Profile(t *testing.T) {
+func TestFlagsZGC(t *testing.T) {
 	cfg := config.Config{
-		HeapSizeGB:              8,
-		MetaspaceMB:             512,
-		MaxGCPauseMillis:        35,
-		ParallelGCThreads:       8,
-		ConcGCThreads:           2,
-		SoftRefLRUPolicyMSPerMB: 50,
-		ReservedCodeCacheSizeMB: 512,
+		HeapSizeGB:                8,
+		MetaspaceMB:               512,
+		ZAllocationSpikeTolerance: 5.0,
+		ZFragmentationLimit:       15,
+		ParallelGCThreads:         8,
+		ConcGCThreads:             4,
+		ReservedCodeCacheSizeMB:   512,
 	}
 	flags := Flags(cfg)
 	joined := " " + strings.Join(flags, " ") + " "
@@ -23,11 +23,15 @@ func TestFlagsConservativeJDK2501Profile(t *testing.T) {
 	mustContain := []string{
 		"-Xmx8g",
 		"-Xms2g",
-		"-XX:+UseG1GC",
-		"-XX:MaxGCPauseMillis=35",
+		"-XX:SoftMaxHeapSize=7g",
+		"-XX:+UseZGC",
+		"-XX:ConcGCThreads=4",
 		"-XX:ParallelGCThreads=8",
-		"-XX:ConcGCThreads=2",
+		"-XX:ZFragmentationLimit=15",
+		"-XX:ZAllocationSpikeTolerance=5.0",
 		"-XX:ReservedCodeCacheSize=512m",
+		"-XX:+ZProactive",
+		"-XX:+DisableExplicitGC",
 	}
 	for _, f := range mustContain {
 		if !strings.Contains(joined, " "+f+" ") {
@@ -36,14 +40,25 @@ func TestFlagsConservativeJDK2501Profile(t *testing.T) {
 	}
 
 	mustNotContain := []string{
-		"-XX:+UnlockExperimentalVMOptions",
+		"-XX:+UseG1GC",
+		"-XX:MaxGCPauseMillis=",
 		"-XX:G1HeapRegionSize=",
-		"-XX:+G1UseAdaptiveIHOP",
+		"-XX:+ParallelRefProcEnabled",
 	}
 	for _, f := range mustNotContain {
 		if strings.Contains(joined, f) {
-			t.Fatalf("did not expect %q in conservative flags: %v", f, flags)
+			t.Fatalf("did not expect %q in ZGC flags: %v", f, flags)
 		}
+	}
+}
+
+func TestFlagsSoftMaxHeapFloor(t *testing.T) {
+	cfg := config.Config{HeapSizeGB: 2, MetaspaceMB: 256}
+	flags := Flags(cfg)
+	joined := " " + strings.Join(flags, " ") + " "
+	// SoftMaxHeapSize must not go below HeapSizeGB when heap is already small
+	if !strings.Contains(joined, " -XX:SoftMaxHeapSize=2g ") {
+		t.Fatalf("expected SoftMaxHeapSize=2g for 2GB heap: %v", flags)
 	}
 }
 
@@ -60,51 +75,6 @@ func TestClientCompatPropsJDK25(t *testing.T) {
 	for _, p := range mustContain {
 		if !strings.Contains(joined, " "+p+" ") {
 			t.Fatalf("expected %q in props: %v", p, props)
-		}
-	}
-}
-
-func TestJava25SafeFlags(t *testing.T) {
-	cfg := config.Config{
-		MaxGCPauseMillis:               50,
-		ParallelGCThreads:              10,
-		ConcGCThreads:                  5,
-		InitiatingHeapOccupancyPercent: 24,
-		G1NewSizePercent:               16,
-		G1MaxNewSizePercent:            65,
-		G1ReservePercent:               15,
-		G1HeapWastePercent:             5,
-		G1MixedGCCountTarget:           4,
-		G1MixedGCLiveThresholdPercent:  90,
-		SurvivorRatio:                  32,
-		MaxTenuringThreshold:           1,
-		UseStringDeduplication:         true,
-	}
-	flags := Java25SafeFlags(cfg)
-	joined := " " + strings.Join(flags, " ") + " "
-	mustContain := []string{
-		"-XX:+UseG1GC",
-		"-XX:MaxGCPauseMillis=50",
-		"-XX:ParallelGCThreads=10",
-		"-XX:ConcGCThreads=5",
-		"-XX:InitiatingHeapOccupancyPercent=24",
-		"-XX:G1NewSizePercent=16",
-		"-XX:G1MaxNewSizePercent=65",
-		"-XX:G1ReservePercent=15",
-		"-XX:G1HeapWastePercent=5",
-		"-XX:G1MixedGCCountTarget=4",
-		"-XX:G1MixedGCLiveThresholdPercent=90",
-		"-XX:SurvivorRatio=32",
-		"-XX:MaxTenuringThreshold=1",
-		"-XX:+ParallelRefProcEnabled",
-		"-XX:+DisableExplicitGC",
-		"-XX:+PerfDisableSharedMem",
-		"-Djdk.nio.maxCachedBufferSize=262144",
-		"-XX:+UseStringDeduplication",
-	}
-	for _, f := range mustContain {
-		if !strings.Contains(joined, " "+f+" ") {
-			t.Fatalf("expected %q in java25 safe flags: %v", f, flags)
 		}
 	}
 }

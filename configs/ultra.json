@@ -1,0 +1,21 @@
+{
+  "heap_size_gb": 8,
+  "pre_touch": true,
+  "metaspace_mb": 640,
+  "z_allocation_spike_tolerance": 10,
+  "z_collection_interval_sec": 0,
+  "z_fragmentation_limit": 10,
+  "parallel_gc_threads": 10,
+  "conc_gc_threads": 5,
+  "reserved_code_cache_size_mb": 512,
+  "max_inline_level": 22,
+  "freq_inline_size": 800,
+  "inline_small_code": 6500,
+  "max_node_limit": 360000,
+  "node_limit_fudge_factor": 8000,
+  "compile_threshold_scaling": 0.75,
+  "use_large_pages": false,
+  "use_thread_priorities": true,
+  "thread_priority_policy": 1,
+  "auto_box_cache_max": 8192
+}

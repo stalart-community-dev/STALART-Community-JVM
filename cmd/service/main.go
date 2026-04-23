@@ -1,6 +1,6 @@
 // Command service is the IFEO Debugger for javaw.exe / java.exe. Windows
 // launches it as: service.exe <full path to java[w]> <jvm args...>. When
-// the image matches the STALART bundled JVM (SHA-256), JVM flags are merged;
+// the image matches the STALART bundled JVM (SHA-256), ZGC flags are merged;
 // otherwise the process is started unchanged. The child is created with
 // NtCreateUserProcess (IFEO skip), priorities are boosted, then the
 // service waits until the child process exits.
@@ -45,8 +45,7 @@ func main() {
 }
 
 // launch spawns the target javaw with optional JVM flag injection and
-// returns the exit code to propagate to the OS. Nothing sensitive is
-// logged — only counts, sizes and redacted paths.
+// returns the exit code to propagate to the OS.
 func launch(exePath string, args []string) int {
 	isJava25Runtime := strings.Contains(strings.ToLower(exePath), "java25-windows-x86-64")
 	origArgs := append([]string(nil), args...)
@@ -72,82 +71,40 @@ func launch(exePath string, args []string) int {
 	if matchErr != nil {
 		slog.Warn("JVM image match skipped", "err", matchErr)
 	}
-	if !tune {
+
+	switch {
+	case !tune:
 		slog.Info("JVM passthrough (not STALART bundled image or no reference JVM)")
-	} else {
-		if isJava25Runtime {
-			if !jvm.IsLikelyGameLaunch(args) {
-				slog.Info("bundled JVM bootstrap detected: passthrough without JVM injection", "arg_count", len(args))
-			} else {
-				cfg, loadedName, cfgErr := config.LoadActive()
-				switch {
-				case cfgErr != nil:
-					slog.Warn("config load failed, java25 launch passthrough without JVM injection", "err", cfgErr)
-				case cfg.HeapSizeGB == 0:
-					slog.Warn("config has zero heap, java25 launch passthrough without JVM injection", "name", loadedName)
-				default:
-					if requested := config.ActiveName(); requested != "" && requested != loadedName {
-						slog.Warn("active config missing, fell back to default",
-							"requested", requested,
-							"loaded", loadedName,
-						)
-					}
-					args = jvm.StripJava25IncompatibleArgs(args)
-					injected := append(jvm.ClientCompatProps(), jvm.Java25SafeFlags(cfg)...)
-					args = jvm.InjectArgs(args, injected)
-					presetName = loadedName
-					presetMode = "java25-safe"
-					slog.Info("config loaded",
-						"name", loadedName,
-						"mode", "java25-safe",
-						"heap_gb", cfg.HeapSizeGB,
-						"metaspace_mb", cfg.MetaspaceMB,
-						"parallel_gc", cfg.ParallelGCThreads,
-						"conc_gc", cfg.ConcGCThreads,
-						"region_mb", cfg.G1HeapRegionSizeMB,
-						"pause_ms", cfg.MaxGCPauseMillis,
-						"ihop", cfg.InitiatingHeapOccupancyPercent,
-						"large_pages", cfg.UseLargePages,
-						"flags_count", len(injected),
-					)
-				}
-			}
-		} else if !jvm.IsLikelyGameLaunch(args) {
-			slog.Info("bundled JVM bootstrap detected: passthrough without JVM injection", "arg_count", len(args))
-		} else {
-			cfg, loadedName, cfgErr := config.LoadActive()
-			switch {
-			case cfgErr != nil:
-				slog.Warn("config load failed, game launch passthrough without JVM injection", "err", cfgErr)
-			case cfg.HeapSizeGB == 0:
-				slog.Warn("config has zero heap, game launch passthrough without JVM injection", "name", loadedName)
-			default:
-				if requested := config.ActiveName(); requested != "" && requested != loadedName {
-					slog.Warn("active config missing, fell back to default",
-						"requested", requested,
-						"loaded", loadedName,
-					)
-				}
-				var injected []string
-				mode := "full"
-				injected = jvm.Flags(cfg)
-				args = jvm.FilterArgs(args, injected)
-				presetName = loadedName
-				presetMode = mode
-				slog.Info("config loaded",
-					"name", loadedName,
-					"mode", mode,
-					"heap_gb", cfg.HeapSizeGB,
-					"metaspace_mb", cfg.MetaspaceMB,
-					"parallel_gc", cfg.ParallelGCThreads,
-					"conc_gc", cfg.ConcGCThreads,
-					"region_mb", cfg.G1HeapRegionSizeMB,
-					"pause_ms", cfg.MaxGCPauseMillis,
-					"ihop", cfg.InitiatingHeapOccupancyPercent,
-					"large_pages", cfg.UseLargePages,
-					"flags_count", len(injected),
+	case !jvm.IsLikelyGameLaunch(args):
+		slog.Info("bundled JVM bootstrap detected: passthrough without JVM injection", "arg_count", len(args))
+	default:
+		cfg, loadedName, cfgErr := config.LoadActive()
+		switch {
+		case cfgErr != nil:
+			slog.Warn("config load failed, passthrough without JVM injection", "err", cfgErr)
+		case cfg.HeapSizeGB == 0:
+			slog.Warn("config has zero heap, passthrough without JVM injection", "name", loadedName)
+		default:
+			if requested := config.ActiveName(); requested != "" && requested != loadedName {
+				slog.Warn("active config missing, fell back to default",
+					"requested", requested,
+					"loaded", loadedName,
 				)
 			}
+			injected := append(jvm.ClientCompatProps(), jvm.Flags(cfg)...)
+			args = jvm.FilterArgs(args, injected)
+			presetName = loadedName
+			presetMode = "zgc"
+			slog.Info("config loaded",
+				"name", loadedName,
+				"heap_gb", cfg.HeapSizeGB,
+				"metaspace_mb", cfg.MetaspaceMB,
+				"parallel_gc", cfg.ParallelGCThreads,
+				"conc_gc", cfg.ConcGCThreads,
+				"spike_tolerance", cfg.ZAllocationSpikeTolerance,
+				"large_pages", cfg.UseLargePages,
+				"flags_count", len(injected),
+			)
 		}
 	}
 
@@ -216,8 +173,6 @@ func launch(exePath string, args []string) int {
 		return candidate
 	}
 
-	// Some Java 25 launcher chains exit quickly with -123 or even 0 without
-	// actually starting the game. Retry startup sequence automatically.
 	if isJava25Runtime && jvm.IsLikelyGameLaunch(origArgs) && isFastUnstableExit(code, waitMs) {
 		slog.Warn("fast unstable Java 25 primary exit, retrying identical launch",
 			"wait_ms", waitMs,
@@ -242,7 +197,6 @@ func launch(exePath string, args []string) int {
 		}
 	}
 
-	// Windows exit codes are DWORDs; Java often uses signed int (e.g. -123 → 0xFFFFFF85).
 	u := uint32(code)
 	slog.Info("service exit",
 		"code", code,

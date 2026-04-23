@@ -17,7 +17,7 @@ import (
 )
 
 const registryPath = `Software\StalartJvmWrapper`
-const fallbackPreset = "legacy_default"
+const fallbackPreset = "balanced"
 
 // ErrNotFound is returned when a config file does not exist on disk.
 var ErrNotFound = errors.New("config not found")
@@ -27,56 +27,25 @@ type Config struct {
 	PreTouch    bool `json:"pre_touch"`
 	MetaspaceMB int  `json:"metaspace_mb"`
 
-	MaxGCPauseMillis               int `json:"max_gc_pause_millis"`
-	G1HeapRegionSizeMB             int `json:"g1_heap_region_size_mb"`
-	G1NewSizePercent               int `json:"g1_new_size_percent"`
-	G1MaxNewSizePercent            int `json:"g1_max_new_size_percent"`
-	G1ReservePercent               int `json:"g1_reserve_percent"`
-	G1HeapWastePercent             int `json:"g1_heap_waste_percent"`
-	G1MixedGCCountTarget           int `json:"g1_mixed_gc_count_target"`
-	InitiatingHeapOccupancyPercent int `json:"initiating_heap_occupancy_percent"`
-	G1MixedGCLiveThresholdPercent  int `json:"g1_mixed_gc_live_threshold_percent"`
-	G1RSetUpdatingPauseTimePercent int `json:"g1_rset_updating_pause_time_percent"`
-	SurvivorRatio                  int `json:"survivor_ratio"`
-	MaxTenuringThreshold           int `json:"max_tenuring_threshold"`
-
-	G1SATBBufferEnqueueingThresholdPercent int  `json:"g1_satb_buffer_enqueuing_threshold_percent"`
-	G1ConcRSHotCardLimit                   int  `json:"g1_conc_rs_hot_card_limit"`
-	G1ConcRefinementServiceIntervalMillis  int  `json:"g1_conc_refinement_service_interval_millis"`
-	GCTimeRatio                            int  `json:"gc_time_ratio"`
-	UseDynamicNumberOfGCThreads            bool `json:"use_dynamic_number_of_gc_threads"`
-	UseStringDeduplication                 bool `json:"use_string_deduplication"`
+	ZAllocationSpikeTolerance float64 `json:"z_allocation_spike_tolerance"`
+	ZCollectionIntervalSec    int     `json:"z_collection_interval_sec"`
+	ZFragmentationLimit       int     `json:"z_fragmentation_limit"`
 
 	ParallelGCThreads int `json:"parallel_gc_threads"`
 	ConcGCThreads     int `json:"conc_gc_threads"`
 
-	SoftRefLRUPolicyMSPerMB int `json:"soft_ref_lru_policy_ms_per_mb"`
-
-	ReservedCodeCacheSizeMB int  `json:"reserved_code_cache_size_mb"`
-	MaxInlineLevel          int  `json:"max_inline_level"`
-	FreqInlineSize          int  `json:"freq_inline_size"`
-	InlineSmallCode         int  `json:"inline_small_code"`
-	MaxNodeLimit            int  `json:"max_node_limit"`
-	NodeLimitFudgeFactor    int  `json:"node_limit_fudge_factor"`
-	NmethodSweepActivity    int  `json:"nmethod_sweep_activity"`
-	DontCompileHugeMethods  bool `json:"dont_compile_huge_methods"`
-	AllocatePrefetchStyle   int  `json:"allocate_prefetch_style"`
-	AlwaysActAsServerClass  bool `json:"always_act_as_server_class"`
-	UseXMMForArrayCopy      bool `json:"use_xmm_for_array_copy"`
-	UseFPUForSpilling       bool `json:"use_fpu_for_spilling"`
-
-	UseLargePages bool `json:"use_large_pages"`
-
-	// reflection_inflation_threshold is kept for older JSON profiles; it is
-	// not emitted on JDK 25 (HotSpot ignores sun.reflect.inflationThreshold).
-	// Other fields tune C2 tiered compilation and autobox caches.
-	ReflectionInflationThreshold int  `json:"reflection_inflation_threshold"`
-	AutoBoxCacheMax              int  `json:"auto_box_cache_max"`
-	UseThreadPriorities          bool `json:"use_thread_priorities"`
-	ThreadPriorityPolicy         int  `json:"thread_priority_policy"`
-	// Legacy JSON field; JDK 25 has no UseCounterDecay VM option (ignored when building flags).
-	UseCounterDecay         bool    `json:"use_counter_decay"`
+	ReservedCodeCacheSizeMB int     `json:"reserved_code_cache_size_mb"`
+	MaxInlineLevel          int     `json:"max_inline_level"`
+	FreqInlineSize          int     `json:"freq_inline_size"`
+	InlineSmallCode         int     `json:"inline_small_code"`
+	MaxNodeLimit            int     `json:"max_node_limit"`
+	NodeLimitFudgeFactor    int     `json:"node_limit_fudge_factor"`
 	CompileThresholdScaling float64 `json:"compile_threshold_scaling"`
+
+	UseLargePages        bool `json:"use_large_pages"`
+	UseThreadPriorities  bool `json:"use_thread_priorities"`
+	ThreadPriorityPolicy int  `json:"thread_priority_policy"`
+	AutoBoxCacheMax      int  `json:"auto_box_cache_max"`
 }
 
 // Dir returns the configs directory next to the executable.
@@ -140,17 +109,16 @@ func Ensure(sys sysinfo.Info) error {
 }
 
 // RecommendPreset returns the best preset name for current hardware.
-// This path is deterministic and does not require runtime benchmark data.
 func RecommendPreset(sys sysinfo.Info) string {
 	switch {
 	case sys.TotalGB() < 12 || sys.CPUThreads <= 4:
-		return "legacy_compat"
+		return "compat"
 	case sys.TotalGB() >= 32 && sys.CPUThreads >= 12 && sys.HasBigCache():
-		return "legacy_ultra"
+		return "ultra"
 	case sys.TotalGB() >= 24 && sys.CPUThreads >= 10:
-		return "legacy_performance"
+		return "performance"
 	default:
-		return "legacy_balanced"
+		return "balanced"
 	}
 }
 
@@ -189,12 +157,8 @@ func Load(name string) (Config, error) {
 }
 
 // LoadActive reads the config currently selected in the registry.
-// If the selection points at a name with no corresponding file on
-// disk (the user deleted their custom profile after selecting it),
-// or if no selection has been made at all, the function falls back
-// to legacy_default automatically. The returned name is the config that
-// was actually loaded — comparing it against ActiveName() lets the
-// caller detect that a fallback happened and warn the user.
+// Falls back to the balanced preset when no selection has been made
+// or the selected profile no longer exists on disk.
 func LoadActive() (cfg Config, loadedName string, err error) {
 	requested := ActiveName()
 	if requested == "" {
@@ -202,8 +166,6 @@ func LoadActive() (cfg Config, loadedName string, err error) {
 	}
 	cfg, err = Load(requested)
 	if errors.Is(err, ErrNotFound) {
-		// Selection refers to a profile that no longer exists.
-		// Try fallback preset first, then legacy compatibility alias.
 		if requested != fallbackPreset {
 			if fallbackCfg, fallbackErr := Load(fallbackPreset); fallbackErr == nil {
 				return fallbackCfg, fallbackPreset, nil
@@ -217,10 +179,7 @@ func LoadActive() (cfg Config, loadedName string, err error) {
 }
 
 // ActiveExists reports whether the currently selected active config
-// name has a corresponding file on disk. It returns false when no
-// selection has been made or when the selection has been deleted.
-// Callers can use it to surface a "missing, will fall back to default"
-// notice in the UI without having to actually load the config.
+// name has a corresponding file on disk.
 func ActiveExists() bool {
 	name := ActiveName()
 	if name == "" {

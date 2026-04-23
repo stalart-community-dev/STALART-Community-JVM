@@ -4,77 +4,95 @@ import "strings"
 
 var exactRemove = map[string]struct{}{
 	"-XX:-PrintCommandLineFlags": {},
-	"-XX:+UseG1GC":               {},
-	"-XX:-UseG1GC":               {},
-	"-XX:+UseZGC":                {},
-	"-XX:-UseZGC":                {},
-	"-XX:+UseShenandoahGC":       {},
-	"-XX:-UseShenandoahGC":       {},
-	"-XX:+UseParallelGC":         {},
-	"-XX:+UseSerialGC":           {},
-	"-XX:+UseCompressedOops":     {},
-	"-XX:-UseCompressedOops":     {},
+
+	// GC selector — we always inject +UseZGC
+	"-XX:+UseG1GC":           {},
+	"-XX:-UseG1GC":           {},
+	"-XX:+UseZGC":            {},
+	"-XX:-UseZGC":            {},
+	"-XX:+UseShenandoahGC":   {},
+	"-XX:-UseShenandoahGC":   {},
+	"-XX:+UseParallelGC":     {},
+	"-XX:+UseSerialGC":       {},
+	"-XX:+UseCompressedOops": {},
+	"-XX:-UseCompressedOops": {},
+
 	"-XX:+PerfDisableSharedMem":  {},
 	"-XX:-PerfDisableSharedMem":  {},
-	"-XX:+UseBiasedLocking":      {},
-	"-XX:-UseBiasedLocking":      {},
-	"-XX:+UseStringDeduplication": {},
-	"-XX:-UseStringDeduplication": {},
-	"-XX:+UseNUMA":    {},
-	"-XX:-UseNUMA":    {},
-	"-XX:+UseDynamicNumberOfGCThreads":   {},
-	"-XX:-UseDynamicNumberOfGCThreads":   {},
-	"-XX:+AlwaysActAsServerClassMachine": {},
-	"-XX:-AlwaysActAsServerClassMachine": {},
-	"-XX:+UseXMMForArrayCopy": {},
-	"-XX:-UseXMMForArrayCopy": {},
-	"-XX:+UseFPUForSpilling": {},
-	"-XX:-UseFPUForSpilling": {},
-	"-XX:-DontCompileHugeMethods": {},
-	"-XX:+DontCompileHugeMethods": {},
-	"-XX:+AlwaysPreTouch":          {},
-	"-XX:-AlwaysPreTouch":          {},
-	"-XX:+ParallelRefProcEnabled":  {},
-	"-XX:-ParallelRefProcEnabled":  {},
-	"-XX:+DisableExplicitGC":       {},
-	"-XX:-DisableExplicitGC":       {},
-	"-XX:+G1UseAdaptiveIHOP": {},
-	"-XX:-G1UseAdaptiveIHOP": {},
-	"-XX:+UnlockExperimentalVMOptions": {},
-	"-XX:-UnlockExperimentalVMOptions": {},
-	"-XX:+UnlockDiagnosticVMOptions": {},
-	"-XX:-UnlockDiagnosticVMOptions": {},
-	"-XX:+UseThreadPriorities": {},
-	"-XX:-UseThreadPriorities": {},
-	"-XX:+UseCounterDecay":   {},
-	"-XX:-UseCounterDecay":   {},
-	"-XX:+UseLargePages":     {},
-	"-XX:-UseLargePages":     {},
-}
+	"-XX:+AlwaysPreTouch":        {},
+	"-XX:-AlwaysPreTouch":        {},
+	"-XX:+DisableExplicitGC":     {},
+	"-XX:-DisableExplicitGC":     {},
+	"-XX:+ZProactive":            {},
+	"-XX:-ZProactive":            {},
+	"-XX:+ZUncommit":             {},
+	"-XX:-ZUncommit":             {},
+	"-XX:+UseNUMA":               {},
+	"-XX:-UseNUMA":               {},
+	"-XX:+UseThreadPriorities":   {},
+	"-XX:-UseThreadPriorities":   {},
+	"-XX:+UseLargePages":         {},
+	"-XX:-UseLargePages":         {},
+	"-XX:+ParallelRefProcEnabled": {},
+	"-XX:-ParallelRefProcEnabled": {},
 
-// java25ExactIncompatible removes legacy flags that are unsupported on
-// modern HotSpot and cause fatal startup errors with JDK 25.
-var java25ExactIncompatible = map[string]struct{}{
-	"-XX:+UseConcMarkSweepGC":   {},
-	"-XX:-UseConcMarkSweepGC":   {},
-	"-XX:+UseParNewGC":          {},
-	"-XX:-UseParNewGC":          {},
-	"-XX:+UseBiasedLocking":     {},
-	"-XX:-UseBiasedLocking":     {},
-	"-XX:+AggressiveOpts":       {},
-	"-XX:-AggressiveOpts":       {},
-	"-XX:+UseFastAccessorMethods": {},
-	"-XX:-UseFastAccessorMethods": {},
+	// JDK9-era flags removed from JVM; cause fatal startup errors on JDK 25
+	"-XX:+UseConcMarkSweepGC":      {},
+	"-XX:-UseConcMarkSweepGC":      {},
+	"-XX:+UseParNewGC":             {},
+	"-XX:-UseParNewGC":             {},
+	"-XX:+UseBiasedLocking":        {},
+	"-XX:-UseBiasedLocking":        {},
+	"-XX:+AggressiveOpts":          {},
+	"-XX:-AggressiveOpts":          {},
+	"-XX:+UseFastAccessorMethods":  {},
+	"-XX:-UseFastAccessorMethods":  {},
 	"-XX:+UnlockCommercialFeatures": {},
 	"-XX:-UnlockCommercialFeatures": {},
 	"-XX:+FlightRecorder":          {},
 	"-XX:-FlightRecorder":          {},
+
+	// Flags with no effect on JDK 25
+	"-XX:+UseStringDeduplication":        {},
+	"-XX:-UseStringDeduplication":        {},
+	"-XX:+UseDynamicNumberOfGCThreads":   {},
+	"-XX:-UseDynamicNumberOfGCThreads":   {},
+	"-XX:+AlwaysActAsServerClassMachine": {},
+	"-XX:-AlwaysActAsServerClassMachine": {},
+	"-XX:+UseXMMForArrayCopy":            {},
+	"-XX:-UseXMMForArrayCopy":            {},
+	"-XX:+UseFPUForSpilling":             {},
+	"-XX:-UseFPUForSpilling":             {},
+	"-XX:-DontCompileHugeMethods":        {},
+	"-XX:+DontCompileHugeMethods":        {},
+	"-XX:+G1UseAdaptiveIHOP":             {},
+	"-XX:-G1UseAdaptiveIHOP":             {},
+	"-XX:+UnlockExperimentalVMOptions":   {},
+	"-XX:-UnlockExperimentalVMOptions":   {},
+	"-XX:+UnlockDiagnosticVMOptions":     {},
+	"-XX:-UnlockDiagnosticVMOptions":     {},
+	"-XX:+UseCounterDecay":               {},
+	"-XX:-UseCounterDecay":               {},
 }
 
 var prefixRemove = []string{
-	"-XX:MaxGCPauseMillis=",
+	// Heap
+	"-Xms",
+	"-Xmx",
+	"-XX:SoftMaxHeapSize=",
+
+	// Metaspace
 	"-XX:MetaspaceSize=",
 	"-XX:MaxMetaspaceSize=",
+
+	// ZGC tuning (we inject our own)
+	"-XX:ZAllocationSpikeTolerance=",
+	"-XX:ZCollectionInterval=",
+	"-XX:ZFragmentationLimit=",
+	"-XX:ZUncommitDelay=",
+
+	// G1 tuning — stripped when launcher still injects legacy G1 flags
+	"-XX:MaxGCPauseMillis=",
 	"-XX:G1HeapRegionSize=",
 	"-XX:G1NewSizePercent=",
 	"-XX:G1MaxNewSizePercent=",
@@ -90,13 +108,19 @@ var prefixRemove = []string{
 	"-XX:GCTimeRatio=",
 	"-XX:SurvivorRatio=",
 	"-XX:MaxTenuringThreshold=",
+	"-XX:SoftRefLRUPolicyMSPerMB=",
+
+	// GC threads
 	"-XX:ParallelGCThreads=",
 	"-XX:ConcGCThreads=",
-	"-XX:SoftRefLRUPolicyMSPerMB=",
+
+	// Code cache
 	"-XX:ReservedCodeCacheSize=",
 	"-XX:NonNMethodCodeHeapSize=",
 	"-XX:ProfiledCodeHeapSize=",
 	"-XX:NonProfiledCodeHeapSize=",
+
+	// C2 JIT
 	"-XX:MaxInlineLevel=",
 	"-XX:FreqInlineSize=",
 	"-XX:InlineSmallCode=",
@@ -104,10 +128,12 @@ var prefixRemove = []string{
 	"-XX:NodeLimitFudgeFactor=",
 	"-XX:NmethodSweepActivity=",
 	"-XX:AllocatePrefetchStyle=",
+	"-XX:CompileThresholdScaling=",
+
+	// Misc
 	"-XX:LargePageSizeInBytes=",
 	"-XX:AutoBoxCacheMax=",
 	"-XX:ThreadPriorityPolicy=",
-	"-XX:CompileThresholdScaling=",
 	"-Dsun.reflect.inflationThreshold=",
 	"-Djdk.reflect.useDirectMethodHandleOnly=",
 	"-Dio.netty.jfr.enabled=",
@@ -115,15 +141,14 @@ var prefixRemove = []string{
 	"-Dio.netty.tryReflectionSetAccessible=",
 	"-Djdk.attach.allowAttachSelf=",
 	"--sun-misc-unsafe-memory-access=",
-	"-XX:SoftMaxHeapSize=",
-	"-Xms",
-	"-Xmx",
+
+	// Removed in JDK 9+ (PermGen, illegal-access)
+	"-XX:PermSize=",
+	"-XX:MaxPermSize=",
+	"--illegal-access=",
 }
 
-// jvmFlagTakesNextArg reports flags whose value is the following argv
-// element (JDK 9+ module system, agents, etc.). Without this, values
-// like "java.base/java.lang=ALL-UNNAMED" after "--add-opens" were parsed
-// as the main class, breaking the launcher ("--add-opens requires modules").
+// jvmFlagTakesNextArg reports flags whose value is the following argv element.
 func jvmFlagTakesNextArg(flag string) bool {
 	switch flag {
 	case "--add-opens", "--add-exports", "--add-reads", "--patch-module",
@@ -141,8 +166,6 @@ func jvmFlagTakesNextArg(flag string) bool {
 func splitArgs(args []string) (jvm []string, mainClass string, app []string) {
 	for i := 0; i < len(args); {
 		a := args[i]
-		// After "-jar" <file>, the launcher passes app args only — they may
-		// start with "-" (e.g. "--version") and must not be parsed as JVM flags.
 		if a == "-jar" {
 			jvm = append(jvm, a)
 			i++
@@ -194,38 +217,23 @@ func shouldRemove(arg string) bool {
 	return false
 }
 
-func isJava25Incompatible(arg string) bool {
-	if _, ok := java25ExactIncompatible[arg]; ok {
-		return true
-	}
-	for _, p := range []string{"-XX:PermSize=", "-XX:MaxPermSize=", "--illegal-access="} {
-		if strings.HasPrefix(arg, p) {
-			return true
-		}
-	}
-	return false
-}
-
 // IsLikelyGameLaunch reports whether argv looks like the actual Minecraft
 // client process (not Gravit bootstrap / JavaAgent restart stage).
 func IsLikelyGameLaunch(orig []string) bool {
 	joined := strings.Join(orig, " ")
-	if strings.Contains(joined, "net.minecraft.client.main") ||
+	return strings.Contains(joined, "net.minecraft.client.main") ||
 		strings.Contains(joined, "net.minecraft.client.Main") ||
 		strings.Contains(joined, "net.minecraft.launchwrapper.Launch") ||
 		strings.Contains(joined, "cpw.mods") ||
 		strings.Contains(joined, "GradleStart") ||
 		strings.Contains(joined, "--gameDir") ||
 		strings.Contains(joined, "--assetsDir") ||
-		strings.Contains(joined, "--version") {
-		return true
-	}
-	return false
+		strings.Contains(joined, "--version")
 }
 
-// FilterArgs strips launcher-injected flags that conflict with ours,
-// then splices the generated flags back in, preserving the original
-// main class and app arguments.
+// FilterArgs strips launcher-injected flags that conflict with ours
+// (including legacy JDK9 flags fatal on JDK 25), then splices the
+// generated flags back in, preserving the original main class and app args.
 func FilterArgs(orig, injected []string) []string {
 	jvmArgs, mainClass, app := splitArgs(orig)
 
@@ -246,32 +254,11 @@ func FilterArgs(orig, injected []string) []string {
 }
 
 // InjectArgs keeps original JVM args and appends injected args before main class.
-// Useful for compatibility fallbacks where stripping launcher arguments is risky.
 func InjectArgs(orig, injected []string) []string {
 	jvmArgs, mainClass, app := splitArgs(orig)
 	result := make([]string, 0, len(jvmArgs)+len(injected)+1+len(app))
 	result = append(result, jvmArgs...)
 	result = append(result, injected...)
-	if mainClass != "" {
-		result = append(result, mainClass)
-	}
-	return append(result, app...)
-}
-
-// StripJava25IncompatibleArgs removes known legacy VM options that fail on JDK 25.
-// It preserves the launch order and only strips fatal incompatibilities.
-func StripJava25IncompatibleArgs(orig []string) []string {
-	jvmArgs, mainClass, app := splitArgs(orig)
-	filtered := make([]string, 0, len(jvmArgs))
-	for i := 0; i < len(jvmArgs); i++ {
-		a := jvmArgs[i]
-		if isJava25Incompatible(a) {
-			continue
-		}
-		filtered = append(filtered, a)
-	}
-	result := make([]string, 0, len(filtered)+1+len(app))
-	result = append(result, filtered...)
 	if mainClass != "" {
 		result = append(result, mainClass)
 	}
