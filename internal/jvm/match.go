@@ -1,7 +1,4 @@
-// Package javamatch decides whether an invoked java.exe / javaw.exe is the
-// STALART bundled runtime by comparing SHA-256 of the on-disk image with the
-// reference copy under %AppData%\STALART\updates\...
-package javamatch
+package jvm
 
 import (
 	"crypto/sha256"
@@ -14,7 +11,7 @@ import (
 )
 
 // RuntimeDirName is the folder under %AppData%\STALART\updates\ that
-// contains bin\javaw.exe. Update when the launcher ships another JDK build.
+// contains bin\javaw.exe. Update when the launcher ships a new JDK build.
 const RuntimeDirName = "java25-windows-x86-64"
 
 func referenceBin(name string) (string, error) {
@@ -23,18 +20,6 @@ func referenceBin(name string) (string, error) {
 		return "", fmt.Errorf("user config dir: %w", err)
 	}
 	return filepath.Join(roaming, "STALART", "updates", RuntimeDirName, "bin", name), nil
-}
-
-// ReferenceJavaw returns the absolute path to the known-good javaw.exe
-// under %AppData%\STALART\updates\<RuntimeDirName>\bin\ .
-func ReferenceJavaw() (string, error) {
-	return referenceBin("javaw.exe")
-}
-
-// ReferenceJava returns the absolute path to java.exe in the same STALART
-// runtime bin directory (Forge/Gradle launchers often use java.exe).
-func ReferenceJava() (string, error) {
-	return referenceBin("java.exe")
 }
 
 func sha256File(path string) ([]byte, error) {
@@ -50,19 +35,19 @@ func sha256File(path string) ([]byte, error) {
 	return h.Sum(nil), nil
 }
 
-// Match reports whether invokedExe is the STALART-bundled java.exe or
-// javaw.exe (SHA-256 equals the reference under AppData\...\updates\...\bin).
-// If the matching reference file is missing, it returns (false, err) so
-// callers can log once. Any other image name returns (false, nil).
-func Match(invokedExe string) (ok bool, err error) {
+// MatchRuntime reports whether invokedExe is the STALART-bundled java.exe or
+// javaw.exe by comparing SHA-256 against the reference image under
+// %AppData%\STALART\updates\<RuntimeDirName>\bin\. Returns (false, err) when
+// the reference file is missing so callers can log once.
+func MatchRuntime(invokedExe string) (bool, error) {
 	base := filepath.Base(invokedExe)
 	var refPath string
 	var refErr error
 	switch {
 	case strings.EqualFold(base, "javaw.exe"):
-		refPath, refErr = ReferenceJavaw()
+		refPath, refErr = referenceBin("javaw.exe")
 	case strings.EqualFold(base, "java.exe"):
-		refPath, refErr = ReferenceJava()
+		refPath, refErr = referenceBin("java.exe")
 	default:
 		return false, nil
 	}
@@ -83,8 +68,5 @@ func Match(invokedExe string) (ok bool, err error) {
 	if err != nil {
 		return false, fmt.Errorf("hash invoked image: %w", err)
 	}
-	if subtle.ConstantTimeCompare(want, got) == 1 {
-		return true, nil
-	}
-	return false, nil
+	return subtle.ConstantTimeCompare(want, got) == 1, nil
 }

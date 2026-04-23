@@ -22,7 +22,7 @@ func TestFlagsZGC(t *testing.T) {
 
 	mustContain := []string{
 		"-Xmx8g",
-		"-Xms2g",
+		"-Xms8g",
 		"-XX:SoftMaxHeapSize=7g",
 		"-XX:+UseZGC",
 		"-XX:ConcGCThreads=4",

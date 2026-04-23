@@ -17,10 +17,8 @@ import (
 	"time"
 
 	"stalart-wrapper/internal/config"
-	"stalart-wrapper/internal/javamatch"
 	"stalart-wrapper/internal/jvm"
 	"stalart-wrapper/internal/logging"
-	"stalart-wrapper/internal/phantom"
 	"stalart-wrapper/internal/process"
 	"stalart-wrapper/internal/sysinfo"
 )
@@ -39,8 +37,6 @@ func main() {
 	}
 
 	slog.Info("service startup", "args_count", len(os.Args)-1)
-
-	phantom.Start()
 	os.Exit(launch(os.Args[1], os.Args[2:]))
 }
 
@@ -62,12 +58,12 @@ func launch(exePath string, args []string) int {
 		"large_pages", sys.LargePages,
 	)
 
-	if err := config.Ensure(sys); err != nil {
+	if err := config.Ensure(); err != nil {
 		slog.Warn("config ensure failed", "err", err)
 		fmt.Fprintf(os.Stderr, "[config] %v\n", err)
 	}
 
-	tune, matchErr := javamatch.Match(exePath)
+	tune, matchErr := jvm.MatchRuntime(exePath)
 	if matchErr != nil {
 		slog.Warn("JVM image match skipped", "err", matchErr)
 	}

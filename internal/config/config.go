@@ -1,6 +1,6 @@
 // Package config models the JVM tuning profile: persistence on disk
-// (configs/*.json), the "active" pointer in HKCU, and auto-generation
-// from detected hardware.
+// (configs/stable.json), the "active" pointer in HKCU, and the universal
+// default profile.
 package config
 
 import (
@@ -12,12 +12,10 @@ import (
 	"strings"
 
 	"golang.org/x/sys/windows/registry"
-
-	"stalart-wrapper/internal/sysinfo"
 )
 
 const registryPath = `Software\StalartJvmWrapper`
-const fallbackPreset = "balanced"
+const fallbackPreset = "stable"
 
 // ErrNotFound is returned when a config file does not exist on disk.
 var ErrNotFound = errors.New("config not found")
@@ -31,6 +29,7 @@ type Config struct {
 	ZCollectionIntervalSec    int     `json:"z_collection_interval_sec"`
 	ZFragmentationLimit       int     `json:"z_fragmentation_limit"`
 
+	// Zero means let ZGC auto-detect from hardware.
 	ParallelGCThreads int `json:"parallel_gc_threads"`
 	ConcGCThreads     int `json:"conc_gc_threads"`
 
@@ -48,8 +47,37 @@ type Config struct {
 	AutoBoxCacheMax      int  `json:"auto_box_cache_max"`
 }
 
+// DefaultConfig returns the universal stable profile. Values are conservative
+// enough for any modern machine with 8+ GB RAM.
+func DefaultConfig() Config {
+	return Config{
+		HeapSizeGB:  6,
+		PreTouch:    true,
+		MetaspaceMB: 512,
+
+		ZAllocationSpikeTolerance: 5.0,
+		ZCollectionIntervalSec:    0,
+		ZFragmentationLimit:       15,
+
+		// 0 = ZGC auto-detects optimal thread counts from CPU topology.
+		ParallelGCThreads: 0,
+		ConcGCThreads:     0,
+
+		ReservedCodeCacheSizeMB: 512,
+		MaxInlineLevel:          18,
+		FreqInlineSize:          600,
+		InlineSmallCode:         4500,
+		MaxNodeLimit:            280000,
+		NodeLimitFudgeFactor:    8000,
+		CompileThresholdScaling: 0.65,
+
+		UseThreadPriorities:  true,
+		ThreadPriorityPolicy: 1,
+		AutoBoxCacheMax:      8192,
+	}
+}
+
 // Dir returns the configs directory next to the executable.
-// Falls back to ./configs if the executable path can't be resolved.
 func Dir() string {
 	self, err := os.Executable()
 	if err != nil {
@@ -58,9 +86,6 @@ func Dir() string {
 	exeDir := filepath.Dir(self)
 	exeConfigs := filepath.Join(exeDir, "configs")
 
-	// Dev/build layout: binaries live in build/, canonical presets are in
-	// project-root configs/. Prefer root configs to avoid duplicating runtime
-	// state under build/configs.
 	if strings.EqualFold(filepath.Base(exeDir), "build") {
 		rootConfigs := filepath.Join(filepath.Dir(exeDir), "configs")
 		if st, statErr := os.Stat(rootConfigs); statErr == nil && st.IsDir() {
@@ -70,56 +95,27 @@ func Dir() string {
 	return exeConfigs
 }
 
-// Ensure makes sure the configs directory and a fallback config exist,
-// and that an active config is selected in the registry.
-func Ensure(sys sysinfo.Info) error {
+// Ensure creates the configs directory and stable.json if they do not exist,
+// then selects stable as the active config when no selection has been made.
+func Ensure() error {
 	dir := Dir()
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return fmt.Errorf("create configs dir: %w", err)
 	}
 
-	for name, cfg := range Presets(sys) {
-		path := filepath.Join(dir, name+".json")
-		if _, err := os.Stat(path); err == nil {
-			continue
-		} else if !errors.Is(err, os.ErrNotExist) {
-			return fmt.Errorf("stat %s: %w", path, err)
-		}
-		if err := cfg.Save(name); err != nil {
-			return fmt.Errorf("save %s config: %w", name, err)
-		}
-	}
-
-	entries, err := filepath.Glob(filepath.Join(dir, "*.json"))
-	if err != nil {
-		return fmt.Errorf("scan configs dir: %w", err)
-	}
-	if len(entries) == 0 {
-		if err := Generate(sys).Save(fallbackPreset); err != nil {
-			return fmt.Errorf("save %s config: %w", fallbackPreset, err)
+	path := filepath.Join(dir, "stable.json")
+	if _, err := os.Stat(path); errors.Is(err, os.ErrNotExist) {
+		if err := DefaultConfig().Save("stable"); err != nil {
+			return fmt.Errorf("save stable config: %w", err)
 		}
 	}
 
 	if ActiveName() == "" {
-		if err := SetActive(RecommendPreset(sys)); err != nil {
+		if err := SetActive("stable"); err != nil {
 			return fmt.Errorf("set active config: %w", err)
 		}
 	}
 	return nil
-}
-
-// RecommendPreset returns the best preset name for current hardware.
-func RecommendPreset(sys sysinfo.Info) string {
-	switch {
-	case sys.TotalGB() < 12 || sys.CPUThreads <= 4:
-		return "compat"
-	case sys.TotalGB() >= 32 && sys.CPUThreads >= 12 && sys.HasBigCache():
-		return "ultra"
-	case sys.TotalGB() >= 24 && sys.CPUThreads >= 10:
-		return "performance"
-	default:
-		return "balanced"
-	}
 }
 
 // Save writes the config to configs/<name>.json.
@@ -157,8 +153,7 @@ func Load(name string) (Config, error) {
 }
 
 // LoadActive reads the config currently selected in the registry.
-// Falls back to the balanced preset when no selection has been made
-// or the selected profile no longer exists on disk.
+// Falls back to stable when no selection has been made or the profile is missing.
 func LoadActive() (cfg Config, loadedName string, err error) {
 	requested := ActiveName()
 	if requested == "" {
@@ -171,15 +166,11 @@ func LoadActive() (cfg Config, loadedName string, err error) {
 				return fallbackCfg, fallbackPreset, nil
 			}
 		}
-		if fallbackCfg, fallbackErr := Load("default"); fallbackErr == nil {
-			return fallbackCfg, "default", nil
-		}
 	}
 	return cfg, requested, err
 }
 
-// ActiveExists reports whether the currently selected active config
-// name has a corresponding file on disk.
+// ActiveExists reports whether the active config file exists on disk.
 func ActiveExists() bool {
 	name := ActiveName()
 	if name == "" {

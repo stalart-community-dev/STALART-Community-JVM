@@ -38,17 +38,10 @@ func Flags(cfg config.Config) []string {
 		cc = 512
 	}
 
-	// Keep initial heap modest: large Xms + AlwaysPreTouch commits physical
-	// pages immediately and often causes "Could not create the JVM" on
-	// 8–12 GB machines.
-	xms := cfg.HeapSizeGB
-	if xms > 2 {
-		xms = 2
-	}
-
-	// SoftMaxHeapSize tells ZGC to keep heap usage under this value unless
-	// allocation pressure demands expansion up to Xmx. The 1 GB headroom
-	// absorbs world-load spikes without triggering a full GC cycle.
+	// SoftMaxHeapSize guides ZGC's proactive collection cadence: it tries to
+	// keep live data under this threshold, leaving 1 GB headroom for allocation
+	// spikes within the committed heap before triggering a full cycle.
+	// Below 3 GB there is no room to subtract, so soft = hard limit.
 	softMax := cfg.HeapSizeGB - 1
 	if softMax < 2 {
 		softMax = cfg.HeapSizeGB
@@ -65,15 +58,13 @@ func Flags(cfg config.Config) []string {
 
 	flags := []string{
 		fmt.Sprintf("-Xmx%dg", cfg.HeapSizeGB),
-		fmt.Sprintf("-Xms%dg", xms),
+		fmt.Sprintf("-Xms%dg", cfg.HeapSizeGB),
 		fmt.Sprintf("-XX:SoftMaxHeapSize=%dg", softMax),
 
 		fmt.Sprintf("-XX:MetaspaceSize=%dm", cfg.MetaspaceMB),
 		fmt.Sprintf("-XX:MaxMetaspaceSize=%dm", cfg.MetaspaceMB),
 
 		"-XX:+UseZGC",
-		fmt.Sprintf("-XX:ConcGCThreads=%d", cfg.ConcGCThreads),
-		fmt.Sprintf("-XX:ParallelGCThreads=%d", cfg.ParallelGCThreads),
 		fmt.Sprintf("-XX:ZFragmentationLimit=%d", fragLimit),
 		fmt.Sprintf("-XX:ZAllocationSpikeTolerance=%.1f", spikeTolerance),
 
@@ -85,6 +76,12 @@ func Flags(cfg config.Config) []string {
 		"-Djdk.nio.maxCachedBufferSize=262144",
 	}
 
+	if cfg.ConcGCThreads > 0 {
+		flags = append(flags, fmt.Sprintf("-XX:ConcGCThreads=%d", cfg.ConcGCThreads))
+	}
+	if cfg.ParallelGCThreads > 0 {
+		flags = append(flags, fmt.Sprintf("-XX:ParallelGCThreads=%d", cfg.ParallelGCThreads))
+	}
 	if cfg.ZCollectionIntervalSec > 0 {
 		flags = append(flags, fmt.Sprintf("-XX:ZCollectionInterval=%d", cfg.ZCollectionIntervalSec))
 	}

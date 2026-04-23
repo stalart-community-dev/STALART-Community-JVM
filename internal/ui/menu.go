@@ -8,7 +8,6 @@ import (
 	"stalart-wrapper/internal/config"
 	"stalart-wrapper/internal/elevate"
 	"stalart-wrapper/internal/installer"
-	"stalart-wrapper/internal/sysinfo"
 )
 
 type item struct {
@@ -21,8 +20,7 @@ func Run() error {
 	restoreVT := enableVT()
 	defer restoreVT()
 
-	sys := sysinfo.Detect()
-	if err := config.Ensure(sys); err != nil {
+	if err := config.Ensure(); err != nil {
 		return err
 	}
 
@@ -35,8 +33,7 @@ func Run() error {
 			{"Uninstall", elevatedAction("--uninstall", "uninstall")},
 			{"Status", func() bool { PrintStatus(); return true }},
 			{"Select Config", func() bool { selectConfig(); return false }},
-			{"Apply Recommended Config", func() bool { applyRecommended(sys); return true }},
-			{"Regenerate Config", func() bool { regenerate(sys); return true }},
+			{"Reset Config", func() bool { resetConfig(); return true }},
 			{"Exit", func() bool { exit = true; return false }},
 		}
 
@@ -53,22 +50,12 @@ func Run() error {
 	}
 }
 
-func applyRecommended(sys sysinfo.Info) {
-	preset := config.RecommendPreset(sys)
-	if err := config.SetActive(preset); err != nil {
-		fmt.Printf("[error] Failed to set recommended preset: %v\n", err)
-		return
-	}
-	fmt.Printf("[config] Recommended preset applied: %s\n", preset)
-}
-
-// RunAutoTuneOnce applies hardware-recommended preset in non-interactive mode.
+// RunAutoTuneOnce sets the active config to stable in non-interactive mode.
 func RunAutoTuneOnce() error {
-	preset := config.RecommendPreset(sysinfo.Detect())
-	if err := config.SetActive(preset); err != nil {
+	if err := config.SetActive("stable"); err != nil {
 		return err
 	}
-	fmt.Printf("[config] Recommended preset applied: %s\n", preset)
+	fmt.Println("[config] Active config set to: stable")
 	return nil
 }
 
@@ -76,9 +63,9 @@ func drawHeader(active string, exists bool) {
 	fmt.Println("STALART JVM wrapper (java.exe / javaw.exe IFEO)")
 	fmt.Println("-------------------------------------")
 	if active == "" {
-		fmt.Println("Active config: (none — legacy_default.json will be used)")
+		fmt.Println("Active config: (none — stable will be used)")
 	} else if !exists {
-		fmt.Printf("Active config: %s  (missing — falls back to legacy_default)\n", active)
+		fmt.Printf("Active config: %s  (missing — falling back to stable)\n", active)
 	} else {
 		fmt.Printf("Active config: %s\n", active)
 	}
@@ -156,29 +143,16 @@ func selectConfig() {
 	runMenu(items)
 }
 
-func regenerate(sys sysinfo.Info) {
-	fresh := sysinfo.Detect()
-	cfg := config.Generate(fresh)
-
-	fmt.Printf("[config] Detected: %s\n", fresh.Describe())
-	fmt.Printf("[config] Heap: %d GB, GC threads: %d parallel / %d concurrent\n",
-		cfg.HeapSizeGB, cfg.ParallelGCThreads, cfg.ConcGCThreads)
-
-	if fresh.TotalGB() < 8 {
-		fmt.Println("[warning] Less than 8 GB RAM — enable the page file to avoid stalls.")
-	} else if fresh.TotalGB() <= 16 {
-		fmt.Println("[note] 16 GB RAM: page file recommended for comfort.")
-	}
-
-	if err := cfg.Save("legacy_default"); err != nil {
-		fmt.Printf("[error] Failed to save: %v\n", err)
+func resetConfig() {
+	if err := config.DefaultConfig().Save("stable"); err != nil {
+		fmt.Printf("[error] Failed to reset config: %v\n", err)
 		return
 	}
-	if err := config.SetActive("legacy_default"); err != nil {
-		fmt.Printf("[error] Failed to mark active: %v\n", err)
+	if err := config.SetActive("stable"); err != nil {
+		fmt.Printf("[error] %v\n", err)
 		return
 	}
-	fmt.Println("[config] Regenerated legacy_default config.")
+	fmt.Println("[config] stable.json reset to defaults.")
 }
 
 func runMenu(items []item) bool {
