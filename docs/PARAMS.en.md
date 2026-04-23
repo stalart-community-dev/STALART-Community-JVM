@@ -8,13 +8,11 @@ Key preset fields and what they control.
 - `metaspace_mb` — metaspace limit.
 - `pre_touch` — enables `AlwaysPreTouch`.
 
-## G1GC
+## ZGC
 
-- `max_gc_pause_millis` — target GC pause.
-- `initiating_heap_occupancy_percent` — concurrent mark trigger threshold.
-- `g1_heap_region_size_mb` — G1 region size.
-- `g1_new_size_percent`, `g1_max_new_size_percent` — young gen range.
-- `g1_reserve_percent` — memory reserve for promotions.
+- `z_allocation_spike_tolerance` — tolerance for allocation bursts.
+- `z_collection_interval_sec` — forced ZGC cycle interval (0 = automatic).
+- `z_fragmentation_limit` — fragmentation threshold for more aggressive cleanup.
 
 ## Threads and JIT
 
@@ -29,6 +27,6 @@ Key preset fields and what they control.
 
 ## Recommendations
 
-- Start with `balanced` for daily use.
+- Keep `stable` as the default daily-use profile.
 - Change 1-2 parameters at a time and compare by benchmark.
 - Prefer real gameplay runs over short startup-only runs.

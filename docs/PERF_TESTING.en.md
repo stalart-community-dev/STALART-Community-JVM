@@ -7,8 +7,8 @@ Choose the best JVM preset for a specific PC without built-in runtime metric col
 ## Baseline strategy
 
 1. Apply `Apply Recommended Config` / `cli.exe --autotune`.
-2. Use `balanced` as the default baseline.
-3. For low-end hardware try `compat`; for stronger hardware try `performance`/`ultra`.
+2. Use `stable` as the default baseline.
+3. If needed, compare `stable` against a custom JSON profile.
 
 ## Manual validation
 

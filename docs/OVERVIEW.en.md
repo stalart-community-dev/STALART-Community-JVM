@@ -28,6 +28,6 @@
 
 ## Auto-tune behavior
 
-- on first setup, a recommended preset is selected from hardware data;
-- default behavior is `balanced` as a baseline;
-- low-end falls back to `compat`, high-end may prefer `performance`/`ultra`.
+- on first setup, `stable` is created and activated;
+- `cli.exe --autotune` sets `stable` as active;
+- there are no additional built-in presets: deviations are done via custom JSON.

@@ -8,13 +8,11 @@
 - `metaspace_mb` — `Metaspace` лимит.
 - `pre_touch` — включает `AlwaysPreTouch`.
 
-## G1GC
+## ZGC
 
-- `max_gc_pause_millis` — целевая пауза GC.
-- `initiating_heap_occupancy_percent` — порог старта concurrent mark.
-- `g1_heap_region_size_mb` — размер G1 region.
-- `g1_new_size_percent`, `g1_max_new_size_percent` — рамки young generation.
-- `g1_reserve_percent` — резерв памяти под продвижение объектов.
+- `z_allocation_spike_tolerance` — допуск всплесков аллокаций.
+- `z_collection_interval_sec` — интервал принудительного цикла ZGC (0 = авто).
+- `z_fragmentation_limit` — порог фрагментации для более агрессивной уборки.
 
 ## Потоки и компиляция
 
@@ -29,6 +27,6 @@
 
 ## Рекомендации
 
-- Для повседневного использования начинайте с `balanced`.
+- Для повседневного использования оставляйте `stable` как базовый профиль.
 - Меняйте 1-2 параметра за раз и сравнивайте через benchmark.
 - Используйте реальные игровые прогоны, а не только короткие запуски.
